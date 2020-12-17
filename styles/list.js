@@ -7,7 +7,7 @@ export default css`
     margin: 0;
     padding: 0;
     grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(50vw, 1fr));
   }
 
   .list > li {
@@ -16,6 +16,7 @@ export default css`
     padding: 0;
     display: flex;
     align-items: stretch;
+
   }
 
   .list a {
@@ -36,6 +37,7 @@ export default css`
     height: auto;
     width: 100%;
     margin-right: 0.5rem;
+    border-radius: 2px;
   }
 
   .list .noImage {

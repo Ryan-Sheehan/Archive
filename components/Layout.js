@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import GithubCorner from "./GithubCorner";
+
 
 export default function Layout(props) {
   return (
@@ -8,72 +8,60 @@ export default function Layout(props) {
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Sanity + Next.js = 💖</title>
+        <title>Ryan's stuff</title>
       </Head>
-      <nav>
-        <Link href="/">
-          <a>Movies</a>
-        </Link>
-        <Link href="/people">
-          <a>People</a>
-        </Link>
-      </nav>
-      <GithubCorner />
-      <div id="main">{props.children}</div>
-      <footer>
-        <a href="http://sanity.io">
-          <img src="/sanity-logo.svg" alt="Sanity Logo" />
-        </a>
-        +
-        <a href="https://github.com/zeit/next.js" alt="NextJs Logo" >
-          <img
-            className="next"
-            src="/nextjs-logo.svg"
-          />
-        </a>
-        = 💖
-      </footer>
-      <style jsx>{`
-        footer {
-          padding: 5rem 1rem;
-          text-align: center;
-          font-size: 2rem;
-        }
+      
+      <div id="main" className="container">
 
-        footer img {
-          display: inline-block;
-          height: 1em;
-          width: auto;
-          padding: 0 0.4em;
-        }
-
-        nav {
-          position: fixed;
-          display: flex;
-          align-items: center;
-          top: 0;
-          left: 0;
-          width: 100%;
-          background-color: #333;
-          font-size: 1rem;
-          height: 3.5rem;
-        }
-
-        nav a {
-          flex-grow: 1;
-          color: #fff;
-          text-decoration: none;
-          text-align: center;
-        }
-      `}</style>
+      {props.children}
+      </div>
+      
+      <style jsx>{``}</style>
       <style jsx global>{`
         body {
           margin: 0;
           font-family: "Avenir", Helvetica, Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          color: #2c3e50;
-          padding: 3.5rem 0 0;
+          background-color: #fff;
+          color: #000;
+        }
+        .container {
+          height: 100vh;
+          width: 100vw;
+          display: grid;
+          grid-template-columns: 40vw 60vw;
+          grid-template-rows: 100vh;
+          margin: 0rem;
+          position: relative;
+          overflow:hidden;
+        }
+        .green {
+          background-color: #006944;
+        }
+        .blue {
+          background-color: #004789;
+        }
+        .yellow {
+          background-color: #FFD54C;
+        }
+        .orange {
+          background-color: #F37121;
+        }
+        .red {
+          background-color: #D51A3C;
+        }
+        .pink {
+          background-color: #F494BE;
+        }
+        .purple {
+          background-color: #85439A;
+        }
+        .white {
+          background-color: #FFFDEB;
+        }
+        .black {
+          background-color: #231F20;
         }
       `}</style>
     </div>
