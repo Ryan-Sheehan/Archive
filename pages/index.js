@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import LazyLoad from 'react-lazyload';
 import { motion } from 'framer-motion';
-import {CopyToClipboard} from 'react-copy-to-clipboard'; 
+ 
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
 import listStyles from "../styles/list";
 import imageUrlFor from "../utils/imageUrlFor";
+import EmailSVG from "../components/EmailSVG";
 
 const query = `*[_type == "ryan"] {
   _id,
@@ -61,64 +62,10 @@ const translateUpEnd = {
 
 
 
-const Email = () => { 
-  const [copied, setCopied] = useState(false);
-  useEffect(() => {
-      
-      if (copied) {
-        setInterval(() => {
-          setCopied(false);
 
-        }, 2000)
-      } else {
-        clearInterval();
-      }
-   },[copied]);
-    return (
-      <React.Fragment>
-      <CopyToClipboard text={"sheehan.w.ryan @gmail.com"}
-          onCopy={() => setCopied(true)}>
-          <div className={copied ? "contact-email contact-email-clicked" : "contact-email"}>sheehan.w.ryan @gmail.com</div>
-     </CopyToClipboard>
-      <style jsx>{`
 
-        .contact-email {
-          font-size: 1.6rem;
-          word-wrap: break-word;
-          text-decoration: none;
-          transition-duration: 500ms;
-          text-decoration-color: #FFE100;
-          cursor: pointer;
-        }
-        .contact-email-clicked::after {
-          content: "Copied!";
-          background-color: #FFE100;
-          position: absolute;
-          margin-left: -10px;
-          font-family: 'ProtoGroteskBold';
-          font-size: 0.8rem;
-          animation: 200ms ease-out 0s slideInFromBottom;
 
-        }
-        @keyframes slideInFromBottom {
-         0% {
-           transform: translateX(-15px) scale(0);
-         }
-         100% {
-           transform: translateX(0) scale(1);
-         }
-       }
 
-        .contact-email:hover {
-          text-decoration: underline;
-          text-decoration-color: #FFE100;
-
-        }
-
-      `}</style>
-      </React.Fragment>
-    );
-};
 const Ryans = ({ ryan }) => {
 
   const [active, setActive] = useState(null);
@@ -134,9 +81,18 @@ const Ryans = ({ ryan }) => {
      <div className="sidebar">
 
      <motion.div key={ryan._id} initial="hidden" animate="visible" variants={{hidden: translateLeftStart,visible: translateLeftEnd}}>
-     <div className="sidebar-header">
+     <div className="sidebar-inner">
+     <div>
      <div className="sidebar-name">Ryan Sheehan</div>
-     <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Hover over any piece for a description.</div>
+     <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Hover over any piece for a description. Click on the email to copy it.</div>
+
+     </div>
+
+     <motion.div className="contact" key={ryan._id} initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
+
+     <EmailSVG/>
+         
+     </motion.div>
      </div>
      </motion.div>
      {/*ryan.map(ryan => ((ryan._id == active && <div className="sidebar-date">{ryan.date.split("-")[0]}</div>)))*/}
@@ -148,29 +104,16 @@ const Ryans = ({ ryan }) => {
        </motion.div>
 
       )))}
+
+     
       
      
-     <div className="sidebar-socials">
-     <motion.div key={ryan._id} initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
-     <div className="contact">
-     <div className="contact-header">Contact</div>
-
-     <Email/>
-     
-     </div>
-     <div className="sidebar-socials-buttons">
-     <Link href="//github.com/Ryan-Sheehan">
-     <img className="sidebar-social" src="/github.svg"/>
-     </Link>
-     <Link href="//www.instagram.com/ryan__sheehan/">
-     <img className="sidebar-social" src="/instagram.svg"/>
-     </Link>
-     </div>
-     </motion.div>
-     </div>
      
 
      </div>
+
+
+     
      
 
 
@@ -179,7 +122,7 @@ const Ryans = ({ ryan }) => {
       <div className="ryan">
         <ul className="list">
           {ryan.map(ryan => (
-            <li key={ryan._id} className="list__item">
+            <li key={ryan._id} className="list_item">
               {/*<Link href="/ryan/[id]" as={`/ryan/${ryan._id}`}>*/}
                 <a>
                   {ryan.image && (
@@ -226,50 +169,65 @@ const Ryans = ({ ryan }) => {
         }
         @font-face {
           font-family: 'ProtoGroteskRegular';
-          src: url('./static/ProtoGroteskWeb-Regular.eot');
+          src: url('./static/ProtoGroteskWeb-Regular.woff');
         }
+        @font-face {
+          font-family: 'Trattatello';
+          src: url('./static/TrattatelloFont.ttf');
+        }
+        @font-face {
+          font-family: 'ElfrethBlack';
+          src: url('./static/ElfrethBlack.otf');
+        }
+        @font-face {
+          font-family: 'ElfrethBold';
+          src: url('./static/ElfrethBold.otf');
+        }
+        
         
         
         
         .sidebar {
-
           height: 100%;
           grid-column-start: 1;
           grid-row-start: 1;
-          
           display: grid;
           grid-template-columns:repeat(2, 1fr);
-          grid-template-rows: repeat(2, 1fr);
+          grid-template-rows: repeat(1, 1fr);
           padding: 0.625rem;
           
         }
         .sidebar-name {
-          font-size: 2.8rem;
-          line-height: 3.2rem;
+          font-size: 3.6rem;
+          line-height: 4rem;
           margin-bottom: 0.625rem;
+          
         }
-        .sidebar-header {
+        .sidebar-inner {
           font-family: 'SwearBannerBoldCilati';
           padding: 0 0.625rem;
-          
           grid-column-start: 1;
           grid-column-end: 2;
-          grid-row-start: 1;
-          grid-row-end: 2;
+          height: calc(100% - 2.5rem);
           display: flex;
+          justify-content: space-between;
           flex-direction: column;
         }
         .sidebar-bio {
-          font-family: 'SwearBannerRegular';
-          font-size: 1.6rem;
-          
+          font-family: 'ProtoGroteskRegular';
+          font-family: 'Trattatello';
+          font-family: 'SwearTextRegular';
+          font-size: 1.4rem;
+          line-height: 1.8rem;
         }
         .sidebar-description {
           font-family: 'SwearTextRegular';
           grid-column-start: 2;
-          
           grid-row-start: 1;
-          grid-row-end: 3;
+          grid-row-end: 1;
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
           padding: 0 0.625rem;
         }
         .sidebar-date {
@@ -298,65 +256,41 @@ const Ryans = ({ ryan }) => {
           position: absolute;
           width: 20vw;
           bottom: 1.25rem;
-          padding: 0 0.625rem;
+          
           padding-bottom: 1.25rem;
 
         }
         .sidebar-socials-buttons {
           margin-top: 1.25rem;
           display:flex;
+          flex-direction:column;
           justify-content:flex-start;
 
         }
         .sidebar-social {
-          height: 4rem;
-          margin: 0 0.625rem;
+          height: 3rem;
+          margin-right: 0.625rem;
+          margin-top: 0.625rem;
           cursor: pointer;
         }
         .contact {
+          grid-column-start: 1;
+          
+          grid-row-start: 2;
           display: flex;
           flex-direction: column;
           padding: 0 0.625rem;
           margin-bottom: 1.25rem;
+          height: 100%;
+          width: 100%;
           font-family: 'SwearTextRegular';
         }
         .contact-header {
           font-family: 'SwearBannerBoldCilati';
           font-size: 2.8rem;
-          margin-bottom: 0.625rem;
+          margin-bottom: 0.3125rem;
         }
-        .contact-email {
-          font-size: 1.6rem;
-          word-wrap: break-word;
-          text-decoration: none;
-          transition-duration: 500ms;
-          text-decoration-color: #FFE100;
-          cursor: pointer;
-        }
-        .contact-email-clicked::after {
-          content: "Copied!";
-          background-color: #FFE100;
-          position: absolute;
-          margin-left: -10px;
-          font-family: 'ProtoGroteskBold';
-          font-size: 0.8rem;
-          animation: 200ms ease-out 0s slideInFromBottom;
-
-        }
-        @keyframes slideInFromBottom {
-         0% {
-           transform: translateX(-15px) scale(0);
-         }
-         100% {
-           transform: translateX(0) scale(1);
-         }
-       }
-
-        .contact-email:hover {
-          text-decoration: underline;
-          text-decoration-color: #FFE100;
-
-        }
+        
         .color-selector {
           grid-column-start: 1;
           grid-row-start: 3;
@@ -378,6 +312,13 @@ const Ryans = ({ ryan }) => {
 
           border-radius: 10px;
         }
+        .list_item {
+          
+        }
+        .list_item:hover {
+          
+    
+        }
         .ryan {
           padding: 0.625rem;
 
@@ -391,7 +332,17 @@ const Ryans = ({ ryan }) => {
           line-height: 1em;
           padding: 0.5em 0;
         }
+        .tags {
+          grid-column-start: 2;
+          grid-row-start: 2;
+          font-family: 'SwearBannerBoldCilati';
+          font-size: 2.8rem;
+          margin-bottom: 0.625rem;
+        }
+
+
       `}</style>
+
       <style jsx>{listStyles}</style>
     </Layout>
   );

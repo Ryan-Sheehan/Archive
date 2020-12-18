@@ -2,6 +2,17 @@
 import css from "styled-jsx/css";
 
 export default css`
+.contact-email-spinning {
+        animation: rotation 2s infinite linear;
+      }
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(359deg);
+        }
+      }
   .list {
     display: grid;
     margin: 0;
@@ -16,7 +27,14 @@ export default css`
     padding: 0;
     display: flex;
     align-items: stretch;
+    border-left: 0;
+    transition-duration: 500ms;
+    word-wrap: break-word;
 
+  }
+  .list > li:hover {
+     border-left: 0px solid black;
+    
   }
 
   .list a {
