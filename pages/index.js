@@ -1,13 +1,18 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import LazyLoad from 'react-lazyload';
+
 import { motion } from 'framer-motion';
  
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
 import listStyles from "../styles/list";
+import infoStyles from "../styles/info";
+import sidebarStyles from "../styles/sidebar";
+import fontStyles from "../styles/fonts";
+
 import imageUrlFor from "../utils/imageUrlFor";
+
 import EmailSVG from "../components/EmailSVG";
 
 const query = `*[_type == "ryan"] {
@@ -17,6 +22,7 @@ const query = `*[_type == "ryan"] {
   date,
   image,
   "imageAspect": image.asset->.metadata.dimensions.aspectRatio,
+  "color":image.asset->.metadata.palette.dominant.background
 }[0...50]
 `;
 
@@ -66,70 +72,121 @@ const translateUpEnd = {
 
 
 
-const Ryans = ({ ryan }) => {
+class Ryans extends React.Component {
 
-  const [active, setActive] = useState(null);
+  constructor(props) {
+    super(props)
+    this.state = {
+      active: null,
+      
+    }
+
+    this.domRefs = {};
+
+  }
+
+  handleClick = (id) => {
+    console.log(this.domRefs[id])
+    if (this.state.active === id) {
+      this.setState({active:null})
+    }
+    else {
+      this.setState({active:id})
+    }
+    
+    this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+  }
+
+  onItemClick = () => {
+
+  }
+
+
+  
   
 
    
-
+  render() {
   return (
     <Layout>
-     
+     <div id="main" className={this.state.active !== null ? "container-pushed" : "container"}>
 
      
-     <div className="sidebar">
+     <div className="sidebar" style={{opacity: this.state.active !== null ? '0' : '1'}}>
 
-     <motion.div key={ryan._id} initial="hidden" animate="visible" variants={{hidden: translateLeftStart,visible: translateLeftEnd}}>
-     <div className="sidebar-inner">
-     <div>
-     <div className="sidebar-name">Ryan Sheehan</div>
-     <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Hover over any piece for a description. Click on the email to copy it.</div>
+     <motion.div initial="hidden" animate="visible" variants={{hidden: translateLeftStart,visible: translateLeftEnd}}>
+      
+      <div className="sidebar-inner ">
+       
+       <div>
+         <div className="sidebar-name no-flickr">Ryan Sheehan</div>
+         <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Hover over any piece for a description. Click on the email to copy it.</div>
+       </div>
 
-     </div>
-
-     <motion.div className="contact" key={ryan._id} initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
-
-     <EmailSVG/>
-         
-     </motion.div>
-     </div>
-     </motion.div>
-     {/*ryan.map(ryan => ((ryan._id == active && <div className="sidebar-date">{ryan.date.split("-")[0]}</div>)))*/}
-     
-     
-     {ryan.map(ryan => ((ryan._id == active && 
-       <motion.div key={ryan._id} initial="hidden" animate="visible" variants={{hidden: scaleStart,visible: scaleEnd}}>
-       <div className="sidebar-description">{ryan.summary}</div>
+       <motion.div className="contact" initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
+         <EmailSVG/>
        </motion.div>
+     
+      </div>
+     </motion.div>
+  
+     </div>
 
-      )))}
+
+     <div className={this.state.active !== null ?"info-open":"info"} >
 
      
       
-     
-     
+      <div className="info-inner">
+       
+       
+         
+         
+         {this.props.ryan.map((ryan, i) => (this.state.active === ryan._id && 
+           <React.Fragment>
+           <div>
+           <div className="info-name">{ryan.name}</div>
+           <div className="info-desc">{ryan.summary}</div>
+           <div className="info-date" style={{"color":ryan.color}}>{ryan.date.split("-")[0]}</div>
+           </div>
+           
+           </React.Fragment>
+          ))}
 
+         
+         
+      
+
+       
+     
+      </div>
+
+  
      </div>
 
 
+
+
+
      
      
 
 
-
-
-      <div className="ryan">
-        <ul className="list">
-          {ryan.map(ryan => (
-            <li key={ryan._id} className="list_item">
+      <div className="ryan-list">
+        <ul className="ryan-list-inner">
+          {this.props.ryan.map((ryan, i) => (
+            <li key={ryan._id} 
+            ref={(ref) => {this.domRefs[ryan._id] = ref}}
+            className={"list_item"}
+            onClick={() => {this.handleClick(ryan._id)}}>
               {/*<Link href="/ryan/[id]" as={`/ryan/${ryan._id}`}>*/}
                 <a>
                   {ryan.image && (
                     <motion.div initial="hidden" animate="visible" variants={{hidden: scaleStart,visible: scaleEnd}}>
                     
-                    <img onMouseEnter={() => {setActive(ryan._id)}}
-                      onMouseLeave={() => {setActive(null)}}
+                    <img 
+                      
                       src={imageUrlFor(ryan.image).width(800)}
                       width="800"
                       height={800 / ryan.imageAspect}
@@ -145,207 +202,81 @@ const Ryans = ({ ryan }) => {
           ))}
         </ul>
       </div>
+
+
+      <style jsx global>{`
+        body {
+          margin: 0;
+          
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          transition-duration: 1s;
+          background-color: ${this.state.active !== null ? '#000' : '#fff'};
+          color: #000;
+        }
+
+        
+
+      `}</style>
       <style jsx>{`
-        @font-face {
-          font-family: 'SwearDisplayBlack';
-          src: url('./static/Swear_Display-Black.woff');
-        }
-        @font-face {
-          font-family: 'SwearBannerBoldCilati';
-          src: url('./static/Swear_Banner-Bold_Cilati.woff');
-        }
-        @font-face {
-          font-family: 'SwearBannerRegular';
-          src: url('./static/Swear_Banner-Regular.woff');
-        }
         
-        @font-face {
-          font-family: 'SwearTextRegular';
-          src: url('./static/Swear_Text-Regular.woff');
-        }
-        @font-face {
-          font-family: 'ProtoGroteskBold';
-          src: url('./static/ProtoGroteskWeb-Bold.woff');
-        }
-        @font-face {
-          font-family: 'ProtoGroteskRegular';
-          src: url('./static/ProtoGroteskWeb-Regular.woff');
-        }
-        @font-face {
-          font-family: 'Trattatello';
-          src: url('./static/TrattatelloFont.ttf');
-        }
-        @font-face {
-          font-family: 'ElfrethBlack';
-          src: url('./static/ElfrethBlack.otf');
-        }
-        @font-face {
-          font-family: 'ElfrethBold';
-          src: url('./static/ElfrethBold.otf');
-        }
-        
-        
-        
-        
-        .sidebar {
-          height: 100%;
-          grid-column-start: 1;
-          grid-row-start: 1;
+        .container {
+
+          height: 100vh;
+          width: 100vw;
           display: grid;
-          grid-template-columns:repeat(2, 1fr);
-          grid-template-rows: repeat(1, 1fr);
-          padding: 0.625rem;
-          
-        }
-        .sidebar-name {
-          font-size: 3.6rem;
-          line-height: 4rem;
-          margin-bottom: 0.625rem;
-          
-        }
-        .sidebar-inner {
-          font-family: 'SwearBannerBoldCilati';
-          padding: 0 0.625rem;
-          grid-column-start: 1;
-          grid-column-end: 2;
-          height: calc(100% - 2.5rem);
-          display: flex;
-          justify-content: space-between;
-          flex-direction: column;
-        }
-        .sidebar-bio {
-          font-family: 'ProtoGroteskRegular';
-          font-family: 'Trattatello';
-          font-family: 'SwearTextRegular';
-          font-size: 1.4rem;
-          line-height: 1.8rem;
-        }
-        .sidebar-description {
-          font-family: 'SwearTextRegular';
-          grid-column-start: 2;
-          grid-row-start: 1;
-          grid-row-end: 1;
-          height: 100%;
-          width: 100%;
-          overflow: hidden;
-          padding: 0 0.625rem;
-        }
-        .sidebar-date {
-          
-          grid-column-start: 1;
-          grid-column-end: 2;
-          grid-row-start: 3;
-          font-family: 'SwearDisplayBlack';
-          font-size: 3.6rem;
-          display:flex;
-          align-items:flex-start;
-          justify-content: flex-start;
-          border-top: 0px solid black;
-        }
-        .sidebar-socials {
-          grid-column-start: 1;
-          grid-column-end: 1;
-          grid-row-start: 2;
-          
-          
-          align-items: center;
-          display: flex;
-          align-items: flex-start;
-          justify-content: flex-start;
-          flex-direction: column;
-          position: absolute;
-          width: 20vw;
-          bottom: 1.25rem;
-          
-          padding-bottom: 1.25rem;
+          grid-template-columns: 40vw 60vw;
 
+          grid-template-rows: 100vh;
+          margin: 0rem;
+          position: relative;
+          padding: 0;
+          transition-delay: 0s;
+          transition-duration: 0.5s;
+          transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+          transform: translateX(0);
+          backgroundColor:#fff;
         }
-        .sidebar-socials-buttons {
-          margin-top: 1.25rem;
-          display:flex;
-          flex-direction:column;
-          justify-content:flex-start;
 
-        }
-        .sidebar-social {
-          height: 3rem;
-          margin-right: 0.625rem;
-          margin-top: 0.625rem;
-          cursor: pointer;
-        }
-        .contact {
-          grid-column-start: 1;
+        .container-pushed {
+
+          height: 100vh;
+          width: 100vw;
+          display: grid;
+          grid-template-columns: 40vw 60vw;
+
+          grid-template-rows: 100vh;
+          margin: 0rem;
+          position: relative;
+          padding: 0;
+          transition-delay: 0s;
+          transition-duration: 0.8s;
+          transform: translateX(-40vw);
+          transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+          backgroundColor:#000;
           
-          grid-row-start: 2;
-          display: flex;
-          flex-direction: column;
-          padding: 0 0.625rem;
-          margin-bottom: 1.25rem;
-          height: 100%;
-          width: 100%;
-          font-family: 'SwearTextRegular';
-        }
-        .contact-header {
-          font-family: 'SwearBannerBoldCilati';
-          font-size: 2.8rem;
-          margin-bottom: 0.3125rem;
         }
         
-        .color-selector {
-          grid-column-start: 1;
-          grid-row-start: 3;
-          display: grid;
-          grid-template-columns: 1fr;
-          grid-template-rows: repeat(4, 1fr);
-          margin-bottom: 0.5rem;
-        }
-        .gbyo {
-          grid-column-start: 1;
-          
-        }
-        .rpbw {
-          grid-column-start: 2;
-          
-        }
-        .color-option {
-          margin: 0.3125rem;
-
-          border-radius: 10px;
-        }
-        .list_item {
-          
-        }
-        .list_item:hover {
-          
+        
+        
+        
+        
     
-        }
-        .ryan {
-          padding: 0.625rem;
+        
+        
 
-          height: 100%;
-          grid-column-start: 2;
-          grid-row-start: 1;
-          overflow-y: auto;
-        }
-
-        .ryan .list h3 {
-          line-height: 1em;
-          padding: 0.5em 0;
-        }
-        .tags {
-          grid-column-start: 2;
-          grid-row-start: 2;
-          font-family: 'SwearBannerBoldCilati';
-          font-size: 2.8rem;
-          margin-bottom: 0.625rem;
-        }
+        
 
 
       `}</style>
-
+      <style jsx>{sidebarStyles}</style>
       <style jsx>{listStyles}</style>
+      <style jsx>{infoStyles}</style>
+      <style jsx>{fontStyles}</style>
+      </div>
     </Layout>
   );
+}
 };
 
 export const getStaticProps = async () => {

@@ -1,0 +1,21 @@
+webpackHotUpdate("static/development/pages/index.js",{
+
+/***/ "./styles/info.js":
+/*!************************!*\
+  !*** ./styles/info.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* styles.js */
+var _defaultExport = new String(".info.jsx-819557518{color:#fff;width:40vw;position:absolute;height:100vh;right:0;-webkit-transition-delay:0s;transition-delay:0s;-webkit-transition-duration:0s;transition-duration:0s;-webkit-transform:translate(40vw);-ms-transform:translate(40vw);transform:translate(40vw);-webkit-transition-timing-function:cubic-bezier(0.85,0,0.15,1);transition-timing-function:cubic-bezier(0.85,0,0.15,1);opacity:0;}.info-open.jsx-819557518{pointer-events:none;color:#fff;width:40vw;position:absolute;height:100vh;right:0;-webkit-transition-delay:0s;transition-delay:0s;-webkit-transition-duration:1s;transition-duration:1s;-webkit-transition-timing-function:cubic-bezier(0.85,0,0.15,1);transition-timing-function:cubic-bezier(0.85,0,0.15,1);-webkit-transform:translate(40vw);-ms-transform:translate(40vw);transform:translate(40vw);opacity:1;}.info-inner.jsx-819557518{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;height:100%;}.info-name.jsx-819557518{font-family:'Trattatello';font-size:2.4rem;}.info-desc.jsx-819557518{font-family:'ObjectSansRegular';}.info-date.jsx-819557518{color:#FFF200;font-family:'SwearBannerBoldCilati';width:100%;text-align:center;font-size:3rem;margin-bottom:1.25rem;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Wb2x1bWVzL1J5YW4tVDUvZXhhbXBsZS1mcm9udGVuZC1uZXh0LWpzL3N0eWxlcy9pbmZvLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdrQixBQUdjLEFBWVEsQUFhUCxBQU1jLEFBSU0sQUFJbEIsV0F0Q0gsR0F1Q3lCLE1BM0J6QixFQVhPLElBOEJELEtBbEJOLENBdUJiLFFBbENlLEVBWUssQ0FrQnBCLE9BUWEsR0FyQ0gsT0FZSyxDQVhPLEFBcUNILFlBekJULENBU2MsS0FpQlAsRUF6QkssYUEwQkMsZUF0Q0UsT0F3Q3pCLGFBM0J5Qix1QkFRTyxXQXBCSixvQkFhZ0Msc0VBWkEsY0FvQjlDLFlBQ2Qsc0JBUjRCLHNFQVpoQixVQUNaLFVBWVksVUFDWiIsImZpbGUiOiIvVm9sdW1lcy9SeWFuLVQ1L2V4YW1wbGUtZnJvbnRlbmQtbmV4dC1qcy9zdHlsZXMvaW5mby5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qIHN0eWxlcy5qcyAqL1xuaW1wb3J0IGNzcyBmcm9tIFwic3R5bGVkLWpzeC9jc3NcIjtcblxuZXhwb3J0IGRlZmF1bHQgY3NzYFxuLmluZm8ge1xuICBjb2xvcjogI2ZmZjtcbiAgd2lkdGg6IDQwdnc7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgaGVpZ2h0OiAxMDB2aDtcbiAgcmlnaHQ6IDA7XG4gIHRyYW5zaXRpb24tZGVsYXk6IDBzO1xuICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAwcztcbiAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoNDB2dyk7XG4gIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC44NSwgMCwgMC4xNSwgMSk7XG4gIG9wYWNpdHk6IDA7XG59XG4uaW5mby1vcGVuIHtcbiAgcG9pbnRlci1ldmVudHM6bm9uZTtcbiAgY29sb3I6ICNmZmY7XG4gIHdpZHRoOiA0MHZ3O1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGhlaWdodDogMTAwdmg7XG4gIHJpZ2h0OiAwO1xuICB0cmFuc2l0aW9uLWRlbGF5OiAwcztcbiAgdHJhbnNpdGlvbi1kdXJhdGlvbjogMXM7XG4gIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC44NSwgMCwgMC4xNSwgMSk7XG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlKDQwdncpO1xuICBvcGFjaXR5OiAxO1xufVxuLmluZm8taW5uZXIge1xuICBkaXNwbGF5OmZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjtcbiAgaGVpZ2h0OiAxMDAlO1xufVxuLmluZm8tbmFtZSB7XG4gIGZvbnQtZmFtaWx5OiAnVHJhdHRhdGVsbG8nO1xuICBmb250LXNpemU6IDIuNHJlbTtcbn1cbi5pbmZvLWRlc2Mge1xuICBmb250LWZhbWlseTogJ09iamVjdFNhbnNSZWd1bGFyJztcblxufVxuLmluZm8tZGF0ZSB7XG4gIGNvbG9yOiAjRkZGMjAwO1xuICBmb250LWZhbWlseTogJ1N3ZWFyQmFubmVyQm9sZENpbGF0aSc7XG4gIHdpZHRoOiAxMDAlO1xuICB0ZXh0LWFsaWduOmNlbnRlcjtcbiAgZm9udC1zaXplOiAzcmVtO1xuICBtYXJnaW4tYm90dG9tOjEuMjVyZW07XG4gIFxufVxuYDtcbiJdfQ== */\n/*@ sourceURL=/Volumes/Ryan-T5/example-frontend-next-js/styles/info.js */");
+
+_defaultExport.__hash = "819557518";
+/* harmony default export */ __webpack_exports__["default"] = (_defaultExport);
+
+/***/ })
+
+})
+//# sourceMappingURL=index.js.1acc425200630c3465e1.hot-update.js.map

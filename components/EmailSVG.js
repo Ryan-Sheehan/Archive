@@ -47,31 +47,28 @@ export default class EmailSVG extends React.Component {
 		this.colorIndex = 0;
 		this.color = this.colors[this.colorIndex];
 	}
+
 	copied = () => {
-		
 		this.setState({copied:true}, () => {
 			const timeout = setInterval(() => {
-
 			  this.setState({copied:false,hovered:false})
 			  clearInterval(timeout);
 			}, 2000)
-
-
 		})
 	}
+
 	shuffleArray = (array) => {
     	for (let i = array.length - 1; i > 0; i--) {
     	    const j = Math.floor(Math.random() * (i + 1));
     	    [array[i], array[j]] = [array[j], array[i]];
     	}
 	}
+
 	onHover = () => {
 		this.setState({hovered:true});
 		this.colorIndex = (this.colorIndex + 1) % this.colors.length;
 		if (this.colorIndex == 0) {this.shuffleArray(this.colors)}
-		
 		this.color = this.colors[this.colorIndex];
-		
 		this.setState({color: this.color})
 	}
 
@@ -109,6 +106,8 @@ export default class EmailSVG extends React.Component {
 		</CopyToClipboard>
 
 		:
+
+		
 		<div className="contact-email contact-email-copied" >
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351.12 338.42">
 		
@@ -196,7 +195,7 @@ export default class EmailSVG extends React.Component {
       	}
       	#email.hovered {
       		transition-duration: 0.5s;
-      		transform: scale(0.9) rotate(180deg);
+      		transform: scale(1) rotate(180deg);
       		
       	}
       	#email.copied {
@@ -209,10 +208,10 @@ export default class EmailSVG extends React.Component {
       	}
       	@keyframes slideInFromBottom {
          0% {
-           transform: translateX(-15px) scale(0);
+           transform: rotate(180deg);
          }
          100% {
-           transform: translateX(0) scale(1);
+           transform: rotate(0deg);
          }
        }
       	#icon {
