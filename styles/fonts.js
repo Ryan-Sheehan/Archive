@@ -7,6 +7,15 @@ export default css`
   src: url('./static/Swear_Display-Black.woff');
 }
 @font-face {
+  font-family: 'SwearDisplayRegular';
+  src: url('./static/Swear_Display-Regular.woff');
+}
+@font-face {
+  font-family: 'SwearVar';
+  src: url('./static/SwearRomanVariable.woff2');
+}
+
+@font-face {
   font-family: 'SwearBannerBoldCilati';
   src: url('./static/Swear_Banner-Bold_Cilati.woff');
 }

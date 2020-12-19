@@ -16,7 +16,7 @@ export default css`
          
           
         }
-.sidebar-name {
+        .sidebar-name {
           font-size: 3.6rem;
           line-height: 4rem;
           margin-bottom: 0.625rem;
@@ -28,7 +28,7 @@ export default css`
           padding: 0 0.625rem;
           grid-column-start: 1;
           grid-column-end: 2;
-          height: calc(100% - 2.5rem);
+          height: 100%;
           display: flex;
           justify-content: space-between;
           flex-direction: column;

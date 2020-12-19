@@ -20,7 +20,13 @@ export default css`
           grid-column-start: 2;
           grid-row-start:1;
           overflow-y: auto;
+           -ms-overflow-style: none;  
+           scrollbar-width: none;
         }
+        .ryan-list::-webkit-scrollbar {
+          display: none;
+        }
+
   .ryan-list-inner {
     display: grid;
     margin: 0;

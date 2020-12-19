@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { motion } from 'framer-motion';
+
+import ReactMarkdown from 'react-markdown'
  
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
@@ -14,6 +16,8 @@ import fontStyles from "../styles/fonts";
 import imageUrlFor from "../utils/imageUrlFor";
 
 import EmailSVG from "../components/EmailSVG";
+
+import CloseButton from "../components/CloseButton";
 
 const query = `*[_type == "ryan"] {
   _id,
@@ -71,32 +75,39 @@ const translateUpEnd = {
 
 
 
-
 class Ryans extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       active: null,
-      
+      open: false,
+      xHovered: false,
     }
 
     this.domRefs = {};
+    
 
   }
 
   handleClick = (id) => {
-    console.log(this.domRefs[id])
-    if (this.state.active === id) {
-      this.setState({active:null})
+    
+    if (this.state.active === id || id === null) {
+      this.setState({active:null, open: false})
     }
     else {
-      this.setState({active:id})
+      this.setState({active:id, open: true})
     }
     
-    this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    
+    if (id !== null) {
+      this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
+
+  handleClose = () => {
+    this.handleClick(null)
+    this.setState({xHovered:false})
+  } 
 
   onItemClick = () => {
 
@@ -110,7 +121,7 @@ class Ryans extends React.Component {
   render() {
   return (
     <Layout>
-     <div id="main" className={this.state.active !== null ? "container-pushed" : "container"}>
+     <div id="main" className={this.state.open ? "container-pushed" : "container"}>
 
      
      <div className="sidebar" style={{opacity: this.state.active !== null ? '0' : '1'}}>
@@ -121,7 +132,7 @@ class Ryans extends React.Component {
        
        <div>
          <div className="sidebar-name no-flickr">Ryan Sheehan</div>
-         <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Hover over any piece for a description. Click on the email to copy it.</div>
+         <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Click on any piece for more information. Click on the email below to copy it. Reach out for anything.</div>
        </div>
 
        <motion.div className="contact" initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
@@ -134,7 +145,7 @@ class Ryans extends React.Component {
      </div>
 
 
-     <div className={this.state.active !== null ?"info-open":"info"} >
+     <div className={this.state.open ?"info-open":"info"} >
 
      
       
@@ -144,14 +155,20 @@ class Ryans extends React.Component {
          
          
          {this.props.ryan.map((ryan, i) => (this.state.active === ryan._id && 
-           <React.Fragment>
-           <div>
+           
+           <div key={ryan._id}>
+
+           <div className={this.state.xHovered ? "info-x info-x-hover" : "info-x"} 
+           onMouseEnter={() => this.setState({xHovered:true})} 
+           onMouseLeave={() => this.setState({xHovered:false})}
+           onClick={() => this.handleClose()}
+           >X</div>
            <div className="info-name">{ryan.name}</div>
-           <div className="info-desc">{ryan.summary}</div>
-           <div className="info-date" style={{"color":ryan.color}}>{ryan.date.split("-")[0]}</div>
+           <div className="info-desc">{<ReactMarkdown>{ryan.summary}</ReactMarkdown>}</div>
+           <div className="info-date">{ryan.date.split("-")[0]}</div>
            </div>
            
-           </React.Fragment>
+           
           ))}
 
          
@@ -226,7 +243,7 @@ class Ryans extends React.Component {
           width: 100vw;
           display: grid;
           grid-template-columns: 40vw 60vw;
-
+          overflow-y:hidden;
           grid-template-rows: 100vh;
           margin: 0rem;
           position: relative;
