@@ -2,19 +2,8 @@
 import css from "styled-jsx/css";
 
 export default css`
+
 .info {
-  color: #fff;
-  width: 40vw;
-  position: absolute;
-  height: 100vh;
-  right: 0;
-  transition-delay: 0s;
-  transition-duration: 0s;
-  transform: translate(40vw);
-  transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
-  opacity: 0;
-}
-.info-open {
   pointer-events:none;
   color: #fff;
   width: 40vw;
@@ -22,7 +11,20 @@ export default css`
   height: 100vh;
   right: 0;
   transition-delay: 0s;
-  transition-duration: 100ms;
+  transition-duration: 500s;
+  transform: translate(40vw);
+  transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+  opacity: 0;
+}
+.info-open {
+  pointer-events:auto;
+  color: #fff;
+  width: 40vw;
+  position: absolute;
+  height: 100vh;
+  right: 0;
+  transition-delay: 0s;
+  transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
   transform: translate(40vw);
   opacity: 1;
@@ -46,27 +48,29 @@ export default css`
   justify-content:center;
   width: 2.5rem;
   position: absolute;
-  z-index:1000000;
-  border: 1px solid #000;
+  z-index:10000;
+  
   border-radius: 10px;
   overflow: visible;
   transition-duration: 200ms;
-  transition-delay: 0s;
+  transition-timing-function:linear;
   transform: scale(1);
   opacity: 1;
   
 }
 .info-x-hover {
   font-variation-settings: 'wght' 200;
-  transition-duration: 200ms;
-  transition-delay: 0s;
+  pointer-events: auto;
   color: #000;
   background-color: #fff;
-  border: 1px solid #fff;
+  
   transform: scale(1);
   opacity: 1;
   animation: 1000ms linear pulse alternate infinite;
   
+}
+.info-x:active {
+  transform: scale(0.8);
 }
 @keyframes pulse {
          0% {

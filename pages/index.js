@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-
+import Router from "next/router";
 import { motion } from 'framer-motion';
 
 import ReactMarkdown from 'react-markdown'
@@ -9,15 +9,20 @@ import ReactMarkdown from 'react-markdown'
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
 import listStyles from "../styles/list";
+import galleryStyles from "../styles/gallery";
 import infoStyles from "../styles/info";
 import sidebarStyles from "../styles/sidebar";
 import fontStyles from "../styles/fonts";
-
+import mainStyles from "../styles/main";
 import imageUrlFor from "../utils/imageUrlFor";
 
 import EmailSVG from "../components/EmailSVG";
-
+import Description from "../components/Description";
 import CloseButton from "../components/CloseButton";
+import SelectedImage from "../components/SelectedImage";
+
+
+import Gallery from "react-photo-gallery";
 
 const query = `*[_type == "ryan"] {
   _id,
@@ -25,55 +30,168 @@ const query = `*[_type == "ryan"] {
   summary,
   date,
   image,
+  height,
+  width,
   "imageAspect": image.asset->.metadata.dimensions.aspectRatio,
   "color":image.asset->.metadata.palette.dominant.background
 }[0...50]
 `;
 
 const scaleStart = {
-    scale: .8,
+   scale: .8,
     opacity: 0
 };
 
 const scaleEnd = {
   scale: 1,
-  opacity: 1,
-  transition: {
-    delay: 0
-  }
+    opacity: 1,
+    transition: {
+      delay: 0
+    }
 };
 
+const listAnimation = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.5
+    }
+  }
+}
 
-const translateLeftStart = {
-    x: -200,
+
+const bgStart = {
+    backgroundColor: "#fff",
     opacity: 0
 };
 
-const translateLeftEnd = {
-  x: 0,
+const bgEnd = {
+  backgroundColor: "#000",
   opacity: 1,
   transition: {
     delay: 0
   }
 };
 
-const translateUpStart = {
+
+
+const sidebarAnimation = {
+  open: { 
+    opacity: 1, 
+    x: 0 
+  },
+  closed: { 
+    opacity: 0, 
+    x: -100,
+    transition: {
+      duration: 0.8,
+      
+    } 
+  }
+}
+
+const contactAnimation = {
+  hidden: {
     y: 400,
-    opacity: 0
-};
-
-const translateUpEnd = {
-  y: 0,
-  opacity: 1,
-  transition: {
-    delay: 0
+    opacity: 0,
+    transition: {
+      delay: 0.8
+    }
+  },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.8
+    }
   }
 };
 
+const xAnimation = {
+  hidden: {
+    scale: 0.2,
+    
+    transition: {
+      delay: 0
+    }
+  },
+  show: {
+    scale: 1,
+    
+    transition: {
+       delay: 0.5,
+      duration: 2,
+        type: "spring", 
+        stiffness: 100 
+    }
+  }
+};
 
+const descriptionAnimation = {
+  hidden: {
+    x: 300,
+    transition: {
+      delay: 0.5,  
+    }
+  },
+  show: {
+    x: 0,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+      ease: [0, 0.55, 0.45, 1]
+    }
+  }
+};
 
+const galleryAnimation = {
+  hidden: { 
+    opacity: 1,
+    backgroundColor:"#fff" 
+  },
+  show: {
+    opacity: 1,
+    backgroundColor:"#000",
+    transition: {
+      delay: 0.2,
+      duration: 0.4
+    }
+  }
+}
 
+function GalleryView({photos}) {
+  const [selectAll, setSelectAll] = useState(false);
 
+  const toggleSelectAll = () => {
+    setSelectAll(!selectAll);
+  };
+
+  const imageRenderer = useCallback(
+    ({ index, left, top, key, photo }) => (
+      <SelectedImage
+        selected={selectAll ? true : false}
+        key={key}
+        margin={"2px"}
+        index={index}
+        stagger={index * 0.05}
+        photo={photo}
+        left={left}
+        top={top}
+      />
+    ),
+    [selectAll]
+  );
+
+  return (
+    <motion.div variants={galleryAnimation}
+    initial="hidden"
+    animate="show">
+
+      <Gallery photos={photos} renderImage={imageRenderer} />
+    </motion.div>
+  );
+}
 
 class Ryans extends React.Component {
 
@@ -81,61 +199,119 @@ class Ryans extends React.Component {
     super(props)
     this.state = {
       active: null,
+      currentDesc: null,
       open: false,
       xHovered: false,
+      mode: 'list'
     }
 
     this.domRefs = {};
+
+    this.descriptions = {};
+    this.galleryPhotos = [];
+    this.listPhotos = []
+    this.props.ryan.forEach((ryan, i) => {
+      this.descriptions[ryan._id] = <Description info={ryan}/>;
+      
+
+      this.galleryPhotos.push(
+        {"src": imageUrlFor(ryan.image).width(800).toString(),
+        "width":800, 
+        "height":800 / ryan.imageAspect
+      });
+
+      const listItemAnimation = {
+        hidden: {
+          scale: .2,
+          opacity: 0,
+          
+        },
+        show: {
+          scale: 1,
+          opacity: 1,
+          
+          transition: {
+            delay: i * 0.2,
+            duration:0.4,
+            ease: [0.85, 0, 0.15, 1]
+          }
+        }
+      }
+
+      this.listPhotos.push(
+        <li key={ryan._id} 
+            ref={(ref) => {this.domRefs[ryan._id] = ref}}
+            className={"list_item"}
+            onClick={() => {this.setActive(ryan._id, "clicked")}}
+            onMouseEnter={() => {if (this.state.open) this.setActive(ryan._id, "hovered")}}
+            >
+              {ryan.image && (
+              
+              <motion.div initial="hidden" animate="show" variants={listItemAnimation}>
+                    
+                <img 
+                  src={imageUrlFor(ryan.image).width(800)}
+                  width="800"
+                  height={800 / ryan.imageAspect}
+                />
+                    
+             
+              </motion.div>
+              
+              )}
+                  
+              <style jsx>{listStyles}</style>
+        </li>
+      )
+
+    })
+    
+    
     
 
   }
 
-  handleClick = (id) => {
+  setActive = (id, method) => {
     
-    if (this.state.active === id || id === null) {
-      this.setState({active:null, open: false})
-    }
-    else {
-      this.setState({active:id, open: true})
-    }
-    
-    if (id !== null) {
+    if ((this.state.active === id || id === null) && method === "clicked") this.setState({active:null, open: false})
+  
+    else if (method === "clicked") {
+      this.setState({active:id, currentDesc: id, open: true})
       this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
+
   handleClose = () => {
-    this.handleClick(null)
+    this.setActive(null, "clicked")
     this.setState({xHovered:false})
   } 
 
-  onItemClick = () => {
-
+  setMode = (current) => {
+    this.setState({active:null, open: false}, () => this.setState({mode:current}))
   }
 
-
-  
-  
-
-   
+ 
   render() {
   return (
     <Layout>
+    <div>
      <div id="main" className={this.state.open ? "container-pushed" : "container"}>
 
      
-     <div className="sidebar" style={{opacity: this.state.active !== null ? '0' : '1'}}>
+     <React.Fragment>
+     <div className={"sidebar"} style={{opacity: this.state.open || this.state.mode === "gallery" ? '0' : '1'}}>
 
-     <motion.div initial="hidden" animate="visible" variants={{hidden: translateLeftStart,visible: translateLeftEnd}}>
+     <motion.div initial="closed" animate={!this.state.open ? "open" : "closed"} transition={{ duration: 0.8 }} variants={sidebarAnimation}>
       
       <div className="sidebar-inner ">
        
        <div>
-         <div className="sidebar-name no-flickr">Ryan Sheehan</div>
+         <div className="sidebar-name">Ryan Sheehan</div>
          <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Click on any piece for more information. Click on the email below to copy it. Reach out for anything.</div>
        </div>
 
-       <motion.div className="contact" initial="hidden" animate="visible" variants={{hidden: translateUpStart,visible: translateUpEnd}}>
+       <motion.div className="contact" initial="hidden" animate={!this.state.open ? "show" : "hidden"} variants={contactAnimation}>
          <EmailSVG/>
        </motion.div>
      
@@ -145,35 +321,23 @@ class Ryans extends React.Component {
      </div>
 
 
-     <div className={this.state.open ?"info-open":"info"} >
-
-     
-      
+     <div className={this.state.open ? "info info-open" : "info"} >
+  
       <div className="info-inner">
        
        
          
          
-         {this.props.ryan.map((ryan, i) => (this.state.active === ryan._id && 
-           
-           <div key={ryan._id}>
-
-           <div className={this.state.xHovered ? "info-x info-x-hover" : "info-x"} 
+      
+      <div className={this.state.xHovered ? "info-x info-x-hover" : "info-x"} 
            onMouseEnter={() => this.setState({xHovered:true})} 
            onMouseLeave={() => this.setState({xHovered:false})}
            onClick={() => this.handleClose()}
-           >X</div>
-           <div className="info-name">{ryan.name}</div>
-           <div className="info-desc">{<ReactMarkdown>{ryan.summary}</ReactMarkdown>}</div>
-           <div className="info-date">{ryan.date.split("-")[0]}</div>
-           </div>
-           
-           
-          ))}
-
-         
-         
+      ><motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={xAnimation}>X</motion.div></div>
       
+      <motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={descriptionAnimation}>
+      {this.descriptions[this.state.currentDesc]}
+      </motion.div>
 
        
      
@@ -182,114 +346,58 @@ class Ryans extends React.Component {
   
      </div>
 
-
-
-
-
      
-     
-
-
-      <div className="ryan-list">
-        <ul className="ryan-list-inner">
-          {this.props.ryan.map((ryan, i) => (
-            <li key={ryan._id} 
-            ref={(ref) => {this.domRefs[ryan._id] = ref}}
-            className={"list_item"}
-            onClick={() => {this.handleClick(ryan._id)}}>
-              {/*<Link href="/ryan/[id]" as={`/ryan/${ryan._id}`}>*/}
-                <a>
-                  {ryan.image && (
-                    <motion.div initial="hidden" animate="visible" variants={{hidden: scaleStart,visible: scaleEnd}}>
-                    
-                    <img 
-                      
-                      src={imageUrlFor(ryan.image).width(800)}
-                      width="800"
-                      height={800 / ryan.imageAspect}
-                    />
-                    
-             
-                    </motion.div>
-                  )}
-                  
-                </a>
-              {/*</Link>*/}
-            </li>
-          ))}
+      <div className="ryan-list" style={{opacity: this.state.mode === "gallery" ? '0' : '1'}}>
+        <ul className="ryan-list-inner" >
+          {this.listPhotos}
         </ul>
-      </div>
+      </div >
 
+      </React.Fragment>
+    
+
+      {this.state.mode === "gallery" && 
+      
+      <div className="ryan-gallery">
+      
+      <GalleryView photos={this.galleryPhotos}/>
+      
+      </div>
+      
+      }
+
+
+
+
+
+      <div className="mode-menu">
+      <div className="mode" onClick={() => this.setMode("gallery")}>
+      Gallery
+      </div>
+      <div className="mode" onClick={() => this.setMode("list")}>
+      List
+      </div>
+      </div>
 
       <style jsx global>{`
         body {
           margin: 0;
-          
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           transition-duration: 1s;
-          background-color: ${this.state.active !== null ? '#000' : '#fff'};
+          background-color: ${this.state.open ? '#000' : '#fff'};
           color: #000;
-        }
-
-        
-
-      `}</style>
-      <style jsx>{`
-        
-        .container {
-
-          height: 100vh;
-          width: 100vw;
-          display: grid;
-          grid-template-columns: 40vw 60vw;
-          overflow-y:hidden;
-          grid-template-rows: 100vh;
-          margin: 0rem;
           position: relative;
-          padding: 0;
-          transition-delay: 0s;
-          transition-duration: 0.5s;
-          transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
-          transform: translateX(0);
-          backgroundColor:#fff;
         }
-
-        .container-pushed {
-
-          height: 100vh;
-          width: 100vw;
-          display: grid;
-          grid-template-columns: 40vw 60vw;
-
-          grid-template-rows: 100vh;
-          margin: 0rem;
-          position: relative;
-          padding: 0;
-          transition-delay: 0s;
-          transition-duration: 0.8s;
-          transform: translateX(-40vw);
-          transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
-          backgroundColor:#000;
-          
-        }
-        
-        
-        
-        
-        
-    
-        
-        
-
-        
-
-
       `}</style>
+      
+      <style jsx>{mainStyles}</style>
       <style jsx>{sidebarStyles}</style>
       <style jsx>{listStyles}</style>
+      <style jsx>{galleryStyles}</style>
       <style jsx>{infoStyles}</style>
       <style jsx>{fontStyles}</style>
+      </div>
       </div>
     </Layout>
   );

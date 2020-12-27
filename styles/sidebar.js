@@ -2,7 +2,8 @@
 import css from "styled-jsx/css";
 
 export default css`
-.sidebar {
+
+        .sidebar {
           height: 100%;
           grid-column-start: 1;
           grid-row-start:1;
@@ -10,16 +11,17 @@ export default css`
           grid-template-columns:repeat(2, 1fr);
           grid-template-rows: repeat(1, 1fr);
           padding: 0 0.625rem;
-          transition-duration: 0.5s;
-          
-          
-         
-          
+          transition-duration: 0.6s;
+        }
+        .sidebar-gallery {
+
         }
         .sidebar-name {
           font-size: 3.6rem;
           line-height: 4rem;
           margin-bottom: 0.625rem;
+
+          cursor:pointer;
           
         }
         .sidebar-inner {

@@ -20,8 +20,10 @@ export default css`
           grid-column-start: 2;
           grid-row-start:1;
           overflow-y: auto;
-           -ms-overflow-style: none;  
-           scrollbar-width: none;
+          overflow-x: auto;
+          
+          scrollbar-width: none;
+          transition-duration: 0.6s;
         }
         .ryan-list::-webkit-scrollbar {
           display: none;

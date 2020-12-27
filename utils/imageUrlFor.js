@@ -5,4 +5,5 @@ const imageBuilder = imageUrlBuilder(sanity);
 
 const imageUrlFor = source => imageBuilder.image(source);
 
+
 export default imageUrlFor;
