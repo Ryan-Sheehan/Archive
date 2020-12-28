@@ -667,7 +667,7 @@ export default class EmailSVG extends React.Component {
                     position:absolute;
                     height:160px;
                     width: 160px;
-                    bottom: 3rem;
+                    bottom: 5rem;
       
                     background-color: #fff;
                     border-radius: 100%;
