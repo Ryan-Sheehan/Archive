@@ -481,6 +481,18 @@ export default class EmailSVG extends React.Component {
       		overflow: visible;
         	cursor: pointer;
         	margin: 1.25rem 0;
+              position: relative;
+              height:auto;
+                    width: auto;
+                    
+      
+                    background-color: transparent;
+                    
+                    padding: 0.625rem;
+                    padding-top: 0.9rem;
+                    padding-right: 0.75rem;
+                    border: 0;
+              
 
         	
       	}
@@ -649,6 +661,33 @@ export default class EmailSVG extends React.Component {
           		transform: rotate(359deg);
         	}
       	}
+           @media only screen and (max-width: 768px) {
+               .contact-email {
+               
+                    position:absolute;
+                    height:160px;
+                    width: 160px;
+                    bottom: 1.25rem;
+      
+                    background-color: #fff;
+                    border-radius: 100%;
+                    padding: 0.625rem;
+                    padding-top: 1.1rem;
+                    padding-right: 0.9rem;
+                    border: 1px solid #000;
+                    
+                  }
+                  .contact-email-copied {
+                        animation: 500ms ease-out 0s spinIn;
+                        animation-fill-mode: forwards;
+                        height:200px;
+                         width: 200px;
+                         background-color: transparent;
+                         border: 0;
+                         padding: 0rem;
+                  }
+
+            }
     	`}</style>
     </React.Fragment>
 	);

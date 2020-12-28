@@ -55,9 +55,12 @@ const SelectedImage = ({
   direction,
   top,
   left,
-  selected
+  selected,
+  setActive
 }) => {
   const [isSelected, setIsSelected] = useState(selected);
+  const [isHovered, setIsHovered] = useState(false);
+
   //calculate x,y scale
   const sx = (100 - (30 / photo.width) * 100) / 100;
   const sy = (100 - (30 / photo.height) * 100) / 100;
@@ -97,6 +100,13 @@ const SelectedImage = ({
   const handleOnClick = e => {
     setIsSelected(!isSelected);
   };
+  const handleMouseEnter = e => {
+    setActive(photo.id,"gallery-hover")
+
+  };
+  const handleMouseLeave = e => {
+   
+  };
 
   useEffect(() => {
     setIsSelected(selected);
@@ -116,10 +126,14 @@ const SelectedImage = ({
           isSelected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }
         }
         {...photo}
-        onClick={handleOnClick}
+        
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
+
+      {isHovered && <div style={{position:"absolute", zIndex: 100000000, fontSize: "5rem", top: 0}}>{photo.desc}</div>}
       
-      <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
+      <style>{`.not-selected:hover{outline:2px solid #fff}`}</style>
     </div>
     </motion.div>
   );

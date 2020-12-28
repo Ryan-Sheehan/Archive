@@ -52,4 +52,11 @@ export default css`
   font-family: 'ElfrethBold';
   src: url('./static/ElfrethBold.otf');
 }
+
+@font-face {
+  font-family: 'CooperNouveau';
+  src: url('./static/CooperNouveau.ttf');
+}
+
+
 `;

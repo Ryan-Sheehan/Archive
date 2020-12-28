@@ -2,7 +2,17 @@
 import css from "styled-jsx/css";
 
 export default css`
+.gallery-info {
+  display:flex;
 
+}
+.gallery-info-text {
+  max-width: 400px;
+  padding: 0 0.625rem;
+}
+.gallery-info-image {
+
+}
 .info {
   pointer-events:none;
   color: #fff;
@@ -35,7 +45,7 @@ export default css`
   font-variation-settings: 'wght' 50;
   pointer-events: auto;
   cursor:pointer;
-  color: #333132;
+  color: #C0C0C0;
   font-size: 3rem;
   top: 0.625rem;
   right: 1.25rem;
@@ -110,7 +120,7 @@ export default css`
   text-align:left;
   font-size: 4rem;
   line-height: 4.6rem;
-  margin-bottom:1.25rem;
+  margin-bottom:0.625rem;
   animation: slideInFromLeft 0.5s cubic-bezier(0.12, 0, 0.39, 0);
   animation-delay: 0s;
 

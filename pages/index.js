@@ -16,13 +16,13 @@ import fontStyles from "../styles/fonts";
 import mainStyles from "../styles/main";
 import imageUrlFor from "../utils/imageUrlFor";
 
+
 import EmailSVG from "../components/EmailSVG";
 import Description from "../components/Description";
-import CloseButton from "../components/CloseButton";
-import SelectedImage from "../components/SelectedImage";
+import GalleryView from "../components/GalleryView";
 
-
-import Gallery from "react-photo-gallery";
+import GalleryIcon from "./svg/gallery.svg"
+import ListIcon from "./svg/list.svg"
 
 const query = `*[_type == "ryan"] {
   _id,
@@ -37,18 +37,6 @@ const query = `*[_type == "ryan"] {
 }[0...50]
 `;
 
-const scaleStart = {
-   scale: .8,
-    opacity: 0
-};
-
-const scaleEnd = {
-  scale: 1,
-    opacity: 1,
-    transition: {
-      delay: 0
-    }
-};
 
 const listAnimation = {
   hidden: { opacity: 0 },
@@ -59,21 +47,6 @@ const listAnimation = {
     }
   }
 }
-
-
-const bgStart = {
-    backgroundColor: "#fff",
-    opacity: 0
-};
-
-const bgEnd = {
-  backgroundColor: "#000",
-  opacity: 1,
-  transition: {
-    delay: 0
-  }
-};
-
 
 
 const sidebarAnimation = {
@@ -145,53 +118,7 @@ const descriptionAnimation = {
   }
 };
 
-const galleryAnimation = {
-  hidden: { 
-    opacity: 1,
-    backgroundColor:"#fff" 
-  },
-  show: {
-    opacity: 1,
-    backgroundColor:"#000",
-    transition: {
-      delay: 0.2,
-      duration: 0.4
-    }
-  }
-}
 
-function GalleryView({photos}) {
-  const [selectAll, setSelectAll] = useState(false);
-
-  const toggleSelectAll = () => {
-    setSelectAll(!selectAll);
-  };
-
-  const imageRenderer = useCallback(
-    ({ index, left, top, key, photo }) => (
-      <SelectedImage
-        selected={selectAll ? true : false}
-        key={key}
-        margin={"2px"}
-        index={index}
-        stagger={index * 0.05}
-        photo={photo}
-        left={left}
-        top={top}
-      />
-    ),
-    [selectAll]
-  );
-
-  return (
-    <motion.div variants={galleryAnimation}
-    initial="hidden"
-    animate="show">
-
-      <Gallery photos={photos} renderImage={imageRenderer} />
-    </motion.div>
-  );
-}
 
 class Ryans extends React.Component {
 
@@ -202,20 +129,42 @@ class Ryans extends React.Component {
       currentDesc: null,
       open: false,
       xHovered: false,
+      x:0,
+      y:0,
+      width: 0, 
+      height: 0,
+      scrollPos: 355,
+      galleryPopups: false,
+      mobile: true,
+
       mode: 'list'
     }
+    this.handleScroll = this.handleScroll.bind(this)
+    this.popupStyles = {left:this.state.x+20,top:this.state.y+20}
 
     this.domRefs = {};
+    this.list = React.createRef();
 
-    this.descriptions = {};
+    this.lastScrollY = 0;
+    this.ticking = false;
+
+    this.listDescriptions = {};
+    this.galleryDescriptions = {};
+
     this.galleryPhotos = [];
     this.listPhotos = []
+    this.listPhotosMobile = []
+
     this.props.ryan.forEach((ryan, i) => {
-      this.descriptions[ryan._id] = <Description info={ryan}/>;
+      this.listDescriptions[ryan._id] = <Description info={ryan} mode={"list"}/>;
+      this.galleryDescriptions[ryan._id] = <Description info={ryan} mode={"gallery"}/>;
       
 
       this.galleryPhotos.push(
         {"src": imageUrlFor(ryan.image).width(800).toString(),
+        "id": ryan._id,
+        "name": ryan.name,
+        "desc": ryan.summary,
         "width":800, 
         "height":800 / ryan.imageAspect
       });
@@ -241,9 +190,34 @@ class Ryans extends React.Component {
       this.listPhotos.push(
         <li key={ryan._id} 
             ref={(ref) => {this.domRefs[ryan._id] = ref}}
-            className={"list_item"}
+            className={"ryan-list-item"}
             onClick={() => {this.setActive(ryan._id, "clicked")}}
             onMouseEnter={() => {if (this.state.open) this.setActive(ryan._id, "hovered")}}
+            >
+              {ryan.image && (
+              
+              <motion.div initial="hidden" animate="show" variants={listItemAnimation}>
+                    
+                <img 
+                  src={imageUrlFor(ryan.image).width(800)}
+                  width="800"
+                  height={800 / ryan.imageAspect}
+                />
+                    
+             
+              </motion.div>
+              
+              )}
+                  
+              <style jsx>{listStyles}</style>
+        </li>
+      )
+
+      this.listPhotosMobile.push(
+        <li key={ryan._id} 
+            ref={(ref) => {this.domRefs[ryan._id] = ref}}
+            className={"ryan-list-item"}
+            
             >
               {ryan.image && (
               
@@ -267,17 +241,82 @@ class Ryans extends React.Component {
     })
     
     
+    this.firstImage = this.props.ryan[0]._id;
     
 
   }
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('resize', this.updateWindowDimensions);
+    document.addEventListener('mousemove', (e) => {
+      this.updateMousePosition(e)
+    });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.updateWindowDimensions);
+    document.removeEventListener('mousemove', (e) => {
+       this.updateMousePosition(e)
+    });
+    this.setState = (state,callback)=>{
+        return;
+    };
+  }
+
+
+  handleScroll = () => {
+
+    let scrolled = this.list.current.children[0].getBoundingClientRect().top
+    
+    if (scrolled >= 0) this.setState({scrollPos:scrolled});
+
+    
+  };
+
+  updateMousePosition = (coords) => {
+    this.setState({x: coords.pageX, y: coords.pageY});
+    this.calculatePopupPosition();
+  }
+  updateWindowDimensions = () => {
+    if (window.innerWidth <= 728) this.setState({ width: window.innerWidth, height: window.innerHeight, mobile: true });
+    else this.setState({ width: window.innerWidth, height: window.innerHeight, mobile: false });
+  }
+
+  calculatePopupPosition = () => {
+    this.popupStyles = {left:this.state.x+20,top:this.state.y+20}
+
+    if (this.state.x + 500 > this.state.width) {
+      this.popupStyles.left = this.state.x-840;
+    }
+    if (this.state.x + 500 <= this.state.width) {
+      this.popupStyles.left = this.state.x+20;
+    }
+
+    if (this.state.y + 300 > this.state.height) {
+      this.popupStyles.top = this.state.y-320;
+    }
+    if (this.state.y + 300 <= this.state.height) {
+      this.popupStyles.top = this.state.y+20;
+    }
+    
+  }
+
+  handleChange = (event) => {
+    this.setState({galleryPopups: !this.state.galleryPopups});
+  }
+
 
   setActive = (id, method) => {
-    
     if ((this.state.active === id || id === null) && method === "clicked") this.setState({active:null, open: false})
   
     else if (method === "clicked") {
       this.setState({active:id, currentDesc: id, open: true})
       this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    else if (method === "gallery-hover") {
+      this.setState({currentDesc: id})
+      
     }
   }
 
@@ -288,35 +327,54 @@ class Ryans extends React.Component {
   } 
 
   setMode = (current) => {
-    this.setState({active:null, open: false}, () => this.setState({mode:current}))
+    this.setState({active:null, open: false, galleryPopups:false}, () => this.setState({mode:current}))
   }
 
  
   render() {
+
   return (
     <Layout>
-    <div>
-     <div id="main" className={this.state.open ? "container-pushed" : "container"}>
+    <div style={{backgroundColor: (this.state.mobile && `rgb(${this.state.scrollPos-100},${this.state.scrollPos-100},${this.state.scrollPos-100})`)}}>
+     <div id="main" className={this.state.open ? "container container-pushed" : "container"}>
+
+    
+     <div className={"sidebar"} style={{opacity: this.state.open || this.state.mode === "gallery" ? '0' : '1'}}>
 
      
-     <React.Fragment>
-     <div className={"sidebar"} style={{opacity: this.state.open || this.state.mode === "gallery" ? '0' : '1'}}>
+
+     {this.state.mobile ? 
+
+       <div className="sidebar-inner">
+       
+       <div>
+         <div className="sidebar-name">Ryan Sheehan</div>
+         <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Click on any piece for more information on the project. Click on the email icon below to copy it. Reach out for anything I'm currently avaiable to work.</div>
+       </div>
+       <EmailSVG/>
+
+
+      </div>
+
+       :
 
      <motion.div initial="closed" animate={!this.state.open ? "open" : "closed"} transition={{ duration: 0.8 }} variants={sidebarAnimation}>
       
-      <div className="sidebar-inner ">
+      <div className="sidebar-inner">
        
        <div>
          <div className="sidebar-name">Ryan Sheehan</div>
          <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Click on any piece for more information. Click on the email below to copy it. Reach out for anything.</div>
        </div>
 
-       <motion.div className="contact" initial="hidden" animate={!this.state.open ? "show" : "hidden"} variants={contactAnimation}>
+       
+        <motion.div className="contact" initial="hidden" animate={!this.state.open ? "show" : "hidden"} variants={contactAnimation}>
          <EmailSVG/>
        </motion.div>
-     
+
       </div>
      </motion.div>
+     }
   
      </div>
 
@@ -324,58 +382,59 @@ class Ryans extends React.Component {
      <div className={this.state.open ? "info info-open" : "info"} >
   
       <div className="info-inner">
-       
-       
-         
-         
       
-      <div className={this.state.xHovered ? "info-x info-x-hover" : "info-x"} 
-           onMouseEnter={() => this.setState({xHovered:true})} 
-           onMouseLeave={() => this.setState({xHovered:false})}
-           onClick={() => this.handleClose()}
-      ><motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={xAnimation}>X</motion.div></div>
-      
-      <motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={descriptionAnimation}>
-      {this.descriptions[this.state.currentDesc]}
-      </motion.div>
+        <div className={this.state.xHovered ? "info-x info-x-hover" : "info-x"} 
+             onMouseEnter={() => this.setState({xHovered:true})} 
+             onMouseLeave={() => this.setState({xHovered:false})}
+             onClick={() => this.handleClose()}
+        ><motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={xAnimation}>X</motion.div></div>
+        
+        <motion.div initial="hidden" animate={this.state.open ? "show" : "hidden"} variants={descriptionAnimation}>
+        {this.listDescriptions[this.state.currentDesc]}
+        </motion.div>
 
-       
-     
       </div>
-
   
-     </div>
+    </div>
 
      
-      <div className="ryan-list" style={{opacity: this.state.mode === "gallery" ? '0' : '1'}}>
-        <ul className="ryan-list-inner" >
-          {this.listPhotos}
+      <div className="ryan-list"  style={{opacity: this.state.mode === "gallery" ? '0' : '1'}}>
+        <ul className="ryan-list-inner" ref={this.list}>
+          {this.state.mobile ? this.listPhotosMobile : this.listPhotos}
         </ul>
       </div >
 
-      </React.Fragment>
+      
     
 
       {this.state.mode === "gallery" && 
       
       <div className="ryan-gallery">
-      
-      <GalleryView photos={this.galleryPhotos}/>
+      {this.state.galleryPopups && <div className="ryan-gallery-popup" style={this.popupStyles}>{this.galleryDescriptions[this.state.currentDesc]}</div>}
+      <GalleryView photos={this.galleryPhotos} setActive={this.setActive}/>
       
       </div>
       
       }
 
 
-
-
-
+      {<label className={this.state.mode === "gallery" ? "checkbox-open":"checkbox-closed"}>
+            <input
+              type="checkbox"
+              
+              checked={this.state.galleryPopups}
+              onChange={this.handleChange}
+            /> Info on hover
+        </label> }
       <div className="mode-menu">
-      <div className="mode" onClick={() => this.setMode("gallery")}>
-      Gallery
+      
+        
+
+      <div className={this.state.mode === "gallery" ? "mode mode-selected" : "mode mode-not-selected"} onClick={() => this.setMode("gallery")}>
+      <GalleryIcon height={40} width={40}/>
       </div>
-      <div className="mode" onClick={() => this.setMode("list")}>
-      List
+      <div className={this.state.mode === "list" ? "mode mode-selected" : "mode mode-not-selected"} onClick={() => this.setMode("list")}>
+      <ListIcon height={40} width={40}/>
       </div>
       </div>
 

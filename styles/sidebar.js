@@ -4,6 +4,7 @@ import css from "styled-jsx/css";
 export default css`
 
         .sidebar {
+          display: block;
           height: 100%;
           grid-column-start: 1;
           grid-row-start:1;
@@ -86,15 +87,23 @@ export default css`
           cursor: pointer;
         }
         .contact {
-          grid-column-start: 1;
           
-          grid-row-start:1;
-          display: flex;
-          flex-direction: column;
-          padding: 0 0.625rem;
-          margin-bottom: 1.25rem;
-          height: 100%;
-          width: 100%;
-          font-family: 'SwearTextRegular';
+        }
+
+        @media only screen and (max-width: 768px) {
+          .sidebar {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start:1;
+            height: auto;
+            display:block;
+            
+          }
+          .contact {
+            position: absolute;
+            height: 50px;
+            width: 50px;
+            z-index:1000000000000000;
+          }
         }
 `;
