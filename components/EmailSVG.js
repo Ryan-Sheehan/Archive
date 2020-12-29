@@ -1,40 +1,6 @@
 import React,{ useState, useEffect } from "react";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import Copied from '../pages/svg/copy.svg';
-
-const Gradients = () => {
-	return(
-		<defs>
-      	  <linearGradient id="gradient1" gradientTransform="rotate(65)">
-      	    <stop offset="5%" stopColor="#006FBA" />
-      	    <stop offset="35%" stopColor="#40B1E5" />
-      	    <stop offset="95%" stopColor="#6CBE45" />
-      	  </linearGradient>
-      	  <linearGradient id="gradient2" gradientTransform="rotate(65)">
-      
-      	    <stop offset="5%" stopColor="#FF9CCB" />
-      	    <stop offset="95%" stopColor="#ED0874" />
-      	  </linearGradient>
-      	  <linearGradient id="gradient3" gradientTransform="rotate(65)">
-      	    <stop offset="35%" stopColor="#F9A01B" />
-      	    <stop offset="85%" stopColor="#EE2346" />
-      	    
-      
-      	  </linearGradient>
-      	  <linearGradient id="gradient4" gradientTransform="rotate(65)">
-      	    <stop offset="5%" stopColor="#FFFCD7" />
-      	    <stop offset="45%" stopColor="#FFE100" />
-      	  </linearGradient>
-
-
-
-      	  
-      	</defs>
-		);
-};
-
-
-
+import Copied from '../pages/svg/copy-background.svg';
 
 
 export default class EmailSVG extends React.Component {
@@ -42,8 +8,7 @@ export default class EmailSVG extends React.Component {
 		super(props)
 		this.state = {
 			hovered: false,
-			copied: false,
-			color: "#FFE100"
+			copied: false
 		}
 		
 	}
@@ -71,13 +36,7 @@ export default class EmailSVG extends React.Component {
 		
 		<CopyToClipboard text={"sheehan.w.ryan@gmail.com"} onCopy={() => this.copied()}>
 
-     	<div className={"contact-email"} >
-		
-
-
-
-
-
+     	<div className="contact-email contact-email-copied">
 
 
 		<svg className={this.state.hovered ? "noFadeIn" : "fadeIn"}
@@ -85,7 +44,7 @@ export default class EmailSVG extends React.Component {
 		onMouseLeave={() => {this.setState({hovered:false})}}
 		xmlns="http://www.w3.org/2000/svg" 
 		viewBox="0 0 351.12 338.42">
-		<Gradients/>
+
 		
 		
 		<g id="icon" className={this.state.hovered ? "not-hovered hovered" : "not-hovered"}>
@@ -124,13 +83,14 @@ export default class EmailSVG extends React.Component {
 		
 		<div className="contact-email contact-email-copied" >
 		
-		<Copied color={this.state.color} bw={true}/>
+		<Copied/>
 		</div>
 		}
 
 		
 		<style jsx>{`
 		
+
       	.contact-email {
       		overflow: visible;
         	cursor: pointer;
@@ -146,6 +106,7 @@ export default class EmailSVG extends React.Component {
                     padding-top: 0.9rem;
                     padding-right: 0.75rem;
                     border: 0;
+                    
               
 
         	
@@ -153,34 +114,8 @@ export default class EmailSVG extends React.Component {
       	.contact-email-clicked {
       		font-size: 2.6rem;
       	}
-      	.contact-email-clicked::after {
-      	  
-      	  border-radius: 100%;
-      	  text-align:center;
-          content: "Copied!";
-          display: inline-block;
-          padding: 15px;
-          background-color: ${this.state.color};
-          position: absolute;
-          z-index: 100;
-          margin-left: -150px;
-          margin-bottom: -200px;
-          font-family: 'ProtoGroteskBold';
-          font-family: 'Trattatello';
-          font-size: 1.2rem;
-          animation: 200ms ease-out 0s spinIn;
+      	
 
-        }
-        @keyframes spinIn {
-         0% {
-           opacity: 0;
-           transform: translateX(-15px) scale(0);
-         }
-         100% {
-           opacity: 1;
-           transform: translateX(0) scale(1);
-         }
-       }
       	#email {
       		transform-box: fill-box;
   			transform-origin: center;
@@ -217,38 +152,8 @@ export default class EmailSVG extends React.Component {
       		animation: 0ms ease-out 0s fadeIn;
       	}
       	
-      	@keyframes fadeIn {
-         0% {
-          transform: scale(0.95);
-           opacity: 0;
-         }
-         100% {
-           transform: scale(1);
-           opacity: 1;
-         }
-       }
-      	@keyframes spinIn {
-         0% {
-           transform: rotate(180deg) scale(0.8);
-           opacity: 0;
-         }
-         100% {
-           transform: rotate(0deg) scale(1);
-           opacity: 1;
-         }
-       }
-      	#icon {
 
-      	}
-      	#icon.not-hovered {
-      		
-      		
-      	}
-      	#icon.hovered {
-      		
-      		
 
-      	}
       	.head {
       		transform: scale(1) rotate(0deg) translateX(0px) translateY(0px);
       		transition-duration: 0.3s;
@@ -306,36 +211,58 @@ export default class EmailSVG extends React.Component {
 		    transform: translate3d(-7px, 0, 0);
 		  }
 		}
-		
-      	
 
-           @media only screen and (max-width: 768px) {
-               .contact-email {
+                        @keyframes fadeIn {
+         0% {
+          transform: scale(0.95);
+           opacity: 0;
+         }
+         100% {
+           transform: scale(1);
+           opacity: 1;
+         }
+       }
+            @keyframes spinIn {
+         0% {
+           transform: rotate(180deg) scale(0.8);
+           opacity: 0;
+         }
+         100% {
+           transform: rotate(0deg) scale(1);
+           opacity: 1;
+         }
+       }
+
+		
+      	@media only screen and (max-width : 768px)
+
+          
                
-                    position:absolute;
-                    height:160px;
-                    width: 160px;
-                    bottom: 7.5rem;
-      
-                    background-color: #fff;
-                    border-radius: 100%;
-                    padding: 0.625rem;
-                    padding-top: 1.1rem;
-                    padding-right: 0.9rem;
-                    border: 1px solid #000;
+                  .contact-email {
+                        position:absolute;
+                        height:160px;
+                        width: 160px;
+                        bottom: 7.5rem;
+                        background-color: #fff;
+                        border-radius: 100%;
+                        padding: 0.625rem;
+                        padding-top: 1.1rem;
+                        padding-right: 0.9rem;
+                        border: 1px solid #000;
                     
                   }
                   .contact-email-copied {
                         animation: 500ms ease-out 0s spinIn;
                         animation-fill-mode: forwards;
                         height:200px;
-                         width: 200px;
-                         background-color: transparent;
-                         border: 0;
-                         padding: 0rem;
+                        width: 200px;
+                        background-color: transparent;
+                        border: 0;
+                        padding: 0rem;
                   }
-
             }
+
+            
     	`}</style>
     </React.Fragment>
 	);

@@ -152,7 +152,7 @@ class Ryans extends React.Component {
 
     this.galleryPhotos = [];
     this.listPhotos = []
-    this.listPhotosMobile = []
+
 
     this.props.ryan.forEach((ryan, i) => {
       this.listDescriptions[ryan._id] = <Description info={ryan} mode={"list"}/>;
@@ -212,30 +212,7 @@ class Ryans extends React.Component {
         </li>
       )
 
-      this.listPhotosMobile.push(
-        <li key={ryan._id} 
-            ref={(ref) => {this.domRefs[ryan._id] = ref}}
-            className={"ryan-list-item"}
-            
-            >
-              {ryan.image && (
-              
-              <motion.div initial="hidden" animate="show" variants={listItemAnimation}>
-                    
-                <img 
-                  src={imageUrlFor(ryan.image).width(800)}
-                  width="800"
-                  height={800 / ryan.imageAspect}
-                />
-                    
-             
-              </motion.div>
-              
-              )}
-                  
-              <style jsx>{listStyles}</style>
-        </li>
-      )
+      
 
     })
     
