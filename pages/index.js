@@ -145,8 +145,7 @@ class Ryans extends React.Component {
     this.domRefs = {};
     this.list = React.createRef();
 
-    this.lastScrollY = 0;
-    this.ticking = false;
+    
 
     this.listDescriptions = {};
     this.galleryDescriptions = {};
@@ -191,7 +190,7 @@ class Ryans extends React.Component {
         <li key={ryan._id} 
             ref={(ref) => {this.domRefs[ryan._id] = ref}}
             className={"ryan-list-item"}
-            onClick={() => {this.setActive(ryan._id, "clicked")}}
+            onClick={() => {this.state.mobile ? null : this.setActive(ryan._id, "clicked")}}
             onMouseEnter={() => {if (this.state.open) this.setActive(ryan._id, "hovered")}}
             >
               {ryan.image && (
@@ -241,7 +240,7 @@ class Ryans extends React.Component {
     })
     
     
-    this.firstImage = this.props.ryan[0]._id;
+    
     
 
   }
@@ -346,15 +345,12 @@ class Ryans extends React.Component {
      {this.state.mobile ? 
 
        <div className="sidebar-inner">
-       
        <div>
          <div className="sidebar-name">Ryan Sheehan</div>
          <div className="sidebar-bio">An archive of some of the graphic work Ryan has made in no particular order. Click on any piece for more information on the project. Click on the email icon below to copy it. Reach out for anything I'm currently avaiable to work.</div>
        </div>
        <EmailSVG/>
-
-
-      </div>
+       </div>
 
        :
 
@@ -374,6 +370,7 @@ class Ryans extends React.Component {
 
       </div>
      </motion.div>
+
      }
   
      </div>
@@ -400,7 +397,7 @@ class Ryans extends React.Component {
      
       <div className="ryan-list"  style={{opacity: this.state.mode === "gallery" ? '0' : '1'}}>
         <ul className="ryan-list-inner" ref={this.list}>
-          {this.state.mobile ? this.listPhotosMobile : this.listPhotos}
+          {this.listPhotos}
         </ul>
       </div >
 

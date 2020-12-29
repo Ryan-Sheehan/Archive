@@ -22,7 +22,8 @@
     "react-lazyload": "^3.1.0",
     "react-markdown": "^5.0.3",
     "react-photo-gallery": "^8.0.0",
-    "webpack": "^5.10.3"
+    "webpack": "^5.10.3",
+    "webpack-bundle-analyzer": "^4.3.0"
   },
   "scripts": {
     "dev": "next",
