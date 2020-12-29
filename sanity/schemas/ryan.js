@@ -24,20 +24,7 @@ export default {
       type: 'date',
      
     },
-    {
-      title: 'Height',
-      name: 'height',
-      type: 'number',
-      validation: Rule => Rule.required().min(1).max(5).integer().positive()
-     
-    },
-    {
-      title: 'Width',
-      name: 'width',
-      type: 'number',
-      validation: Rule => Rule.required().min(1).max(5).integer().positive()
-     
-    },
+    
     {
       name: 'slug',
       title: 'Slug',

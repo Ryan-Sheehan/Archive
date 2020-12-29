@@ -15,7 +15,16 @@ export default function Layout(props) {
       {props.children}
       
       
-     
+     <style jsx global>{`
+        body {
+          margin: 0;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          transition-duration: 1s;
+          color: #000;
+          position: relative;
+        }
+      `}</style>
     </div>
   );
 }

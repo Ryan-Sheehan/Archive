@@ -29,24 +29,7 @@ export default css`
 	z-index:100000;
 	animation: 1s fadeIn linear;
 }
-.checkbox-open {
-	font-family: 'ProtoGroteskBold';
-	z-index:1000000000000;
-	font-size: 1rem;
-	position: absolute;
-    bottom: 1.25rem;
-    right: 6rem;
-    border-radius: 10px;
-    border: 1px solid black;
-    background-color: #fff;
-    padding: 0.625rem;
-    transition-duration: 600ms;
-}
-.checkbox-closed {
-	transition-duration: 500ms;
-	bottom: -4rem;
-	padding: 0.625rem 1.25rem;
-}
+
 @keyframes fadeIn {
         	from {
           		opacity:0;

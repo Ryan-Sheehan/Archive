@@ -44,6 +44,7 @@ export default function GalleryView({photos, setActive}) {
   );
 
   return (
+    
     <motion.div variants={galleryAnimation}
     initial="hidden"
     animate="show">

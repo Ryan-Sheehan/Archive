@@ -1,18 +1,39 @@
-export default function CloseButton(props) {
+import {useState,useEffect} from "react";
+import { motion } from 'framer-motion';
+import infoStyles from "../styles/info";
+
+const xAnimation = {
+  hidden: {
+    scale: 0.2,
+    
+    transition: {
+      delay: 0
+    }
+  },
+  show: {
+    scale: 1,
+    
+    transition: {
+       delay: 0.5,
+      duration: 2,
+        type: "spring", 
+        stiffness: 100 
+    }
+  }
+};
+
+const CloseButton = ({open, close}) => {
+	const [hovered, setHover] = useState(false)
 	return(
-		<React.Fragment>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 193.36 193.36">
-		<defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1">
-		<line className="cls-1" x1="1.5" y1="1.5" x2="191.86" y2="191.86"/>
-		<line className="cls-1" x1="191.86" y1="1.5" x2="1.5" y2="191.86"/></g></g></svg>
-		<style jsx>{`
-			.cls-1{
-				fill:none;
-				stroke:#fff;
-				stroke-linecap:round;
-				stroke-miterlimit:10;
-				stroke-width:30px;}
-    	`}</style>
-    	</React.Fragment>
+		<div className={hovered ? "info-x info-x-hover" : "info-x"} 
+             onMouseEnter={() => setHover(true)} 
+             onMouseLeave={() => setHover(false)}
+             onClick={() => close()}
+        >
+        <motion.div initial="hidden" animate={open ? "show" : "hidden"} variants={xAnimation}>X</motion.div>
+        <style jsx>{infoStyles}</style>
+        </div>
 		);
 }
+
+export default CloseButton;
