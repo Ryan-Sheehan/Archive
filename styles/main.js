@@ -79,6 +79,9 @@ export default css`
     
 
     @media only screen and (max-width: 768px) {
+      body {
+        overflow: hidden;
+      }
       .container {
 
         
