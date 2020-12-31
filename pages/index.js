@@ -7,6 +7,9 @@ import { motion } from 'framer-motion';
 import {
   isMobile
 } from "react-device-detect";
+
+import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
  
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
@@ -18,7 +21,8 @@ import fontStyles from "../styles/fonts";
 import mainStyles from "../styles/main";
 
 import imageUrlFor from "../utils/imageUrlFor";
-
+import getEmoji from "../utils/getEmoji";
+import Favicon from "../components/Favicon";
 import CloseButton from "../components/CloseButton";
 import Description from "../components/Description";
 import GalleryView from "../components/GalleryView";
@@ -92,7 +96,9 @@ class Ryans extends React.Component {
       height: 0,
       popup: false,
       mobile: false,
-      mode: 'list'
+      mode: 'list',
+      scrollColor: '',
+      emoji: getEmoji()
     }
 
     
@@ -131,19 +137,25 @@ class Ryans extends React.Component {
   }
 
   componentDidMount() {
+
     this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-    document.addEventListener('mousemove', (e) => {
+    window.addEventListener('resize', throttle(this.updateWindowDimensions),500);
+    window.addEventListener('scroll', this.getListScrollOffset);
+    document.addEventListener('mousemove', throttle((e) => {
       this.updateMousePosition(e)
-    });
+    },20));
     
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-    document.removeEventListener('mousemove', (e) => {
+    window.removeEventListener('resize', throttle(this.updateWindowDimensions,500));
+    window.removeEventListener('scroll', throttle(this.getListScrollOffset,500));
+    document.removeEventListener('mousemove', throttle((e) => {
        this.updateMousePosition(e)
-    });
+    },20));
+    this.setState = (state,callback)=>{
+        return;
+    };
     
     
   }
@@ -157,7 +169,14 @@ class Ryans extends React.Component {
   }
 
 
-  
+  getListScrollOffset = () => {
+    const firstListElem = this.list.current.firstChild;
+    const offset = Math.floor(firstListElem.getBoundingClientRect().top);
+    const offsetPos = offset > 0 ? offset : 0;
+    this.setState({scrollColor:`rgb(${offset},${offset},${offset})`})
+  }
+
+
 
   updateMousePosition = (coords) => {
     this.setState({x: coords.pageX, y: coords.pageY});
@@ -177,14 +196,15 @@ class Ryans extends React.Component {
     if (this.state.y + 300 > this.state.height) this.popupStyles.top = this.state.y-320;
     if (this.state.y + 300 <= this.state.height) this.popupStyles.top = this.state.y+20;
   }
+  
 
   
   setActive = (id, method) => {
     if ((this.state.active === id || id === null) && method === "clicked") {
-      this.setState({active:null, open: false})
+      this.setState({active:null, open: false, emoji: getEmoji()})
     }
     else if (method === "clicked") {
-      this.setState({active:id, activeDescription: id, open: true})
+      this.setState({active:id, activeDescription: id, open: true, emoji: getEmoji()})
       this.domRefs[id].scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     else if (method === "gallery-hover") {
@@ -230,19 +250,22 @@ class Ryans extends React.Component {
     open,
     mode,
     activeDescription,
-    popup
+    popup,
+    scrollColor,
+    emoji
   } = this.state;
 
   return (
     <Layout>
-    <div>
+    <Favicon emoji={emoji}/>
+    <div style={{backgroundColor: scrollColor}}>
     <div id="main" className={open ? "container container-pushed" : "container"}>
 
     <Sidebar open={open} mode={mode} mobile={mobile}/>
     
     {/* Logic for list view */}
-    <div className="ryan-list"  style={{opacity: mode === "gallery" ? '0' : '1'}}>
-      <ul className="ryan-list-inner" ref={this.list}>
+    <div className="ryan-list"  style={{opacity: mode === "gallery" ? '0' : '1'}} onScroll={this.getListScrollOffset}>
+      <ul className="ryan-list-inner" ref={this.list} >
         {this.listPhotos}
       </ul>
     </div>

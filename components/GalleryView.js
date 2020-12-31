@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from 'framer-motion';
 import Gallery from "react-photo-gallery";
-
+import shortid from "shortid";
 import SelectedImage from "./SelectedImage";
 
 const galleryAnimation = {
@@ -31,7 +31,7 @@ export default function GalleryView({photos, setActive}) {
     ({ index, left, top, key, photo }) => (
       <SelectedImage
         selected={selectAll ? true : false}
-        key={key + "gallery"}
+        key={shortid.generate()}
         margin={"2px"}
         index={index}
         stagger={index * 0.05}
@@ -49,8 +49,6 @@ export default function GalleryView({photos, setActive}) {
     <motion.div variants={galleryAnimation}
     initial="hidden"
     animate="show">
-
-
 
       <Gallery photos={photos} renderImage={imageRenderer} />
     </motion.div>

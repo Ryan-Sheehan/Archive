@@ -18,6 +18,7 @@ export default function Layout(props) {
         <meta name="title" content="Ryan's stuff"/>
         <meta name="description" content="They said I needed to put stuff here for search enginer optimization."/>
         
+
         {/* <!-- Open Graph / Facebook --> */}
         <meta property="og:type" content="website"/>
         <meta property="og:url" content="https://archive-ten.vercel.app/"/>
@@ -33,6 +34,7 @@ export default function Layout(props) {
         <meta property="twitter:image" content={"/epicenter.png"}/>
 
       </Head>
+      
 
       
       
