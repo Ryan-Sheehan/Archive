@@ -117,7 +117,7 @@ class Ryans extends React.Component {
         <li key={ryan._id} 
             ref={(ref) => {this.domRefs[ryan._id] = ref}}
             className="ryan-list-item"
-            onClick={() => {this.setActive(ryan._id, "clicked")}}
+            onClick={() => {isMobile ? null : this.setActive(ryan._id, "clicked")}}
             onMouseEnter={() => {(this.state.open && this.setActive(ryan._id, "hovered"))}}>
             <motion.div initial="hidden" animate="show" transition={{delay: 0.2}} variants={listItemAnimation}>
               <Image src={this.checkFile(ryan.image)} height={ SIZE / ryan.imageAspect} width={SIZE} alt={ryan.name} loading="lazy"/>
