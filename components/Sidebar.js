@@ -13,7 +13,7 @@ const sidebarAnimation = {
     opacity: 0, 
     x: -100,
     transition: {
-      duration: 0.8,
+      duration: 0.5,
       
     } 
   }
@@ -24,14 +24,14 @@ const contactAnimation = {
     y: 400,
     opacity: 0,
     transition: {
-      delay: 0.8
+      delay: 0.5
     }
   },
   show: {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.8
+      duration: 0.5
     }
   }
 };
@@ -46,12 +46,12 @@ const Sidebar = ({open, mode, mobile}) => {
       
       <div className="sidebar-inner">
       <SidebarHeader/>
-      <EmailSVG/>
+      {/*<EmailSVG/>*/}
       </div>
 
       :
 
-      <motion.div initial="closed" animate={!open ? "open" : "closed"} transition={{ duration: 0.8 }} variants={sidebarAnimation}>
+      <motion.div initial="closed" animate={!open ? "open" : "closed"} transition={{ duration: 0.5 }} variants={sidebarAnimation}>
       <div className="sidebar-inner">
        <SidebarHeader/>
          <motion.div className="contact" initial="hidden" animate={!open ? "show" : "hidden"} variants={contactAnimation}>

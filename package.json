@@ -10,7 +10,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "framer-motion": "^3.0.0",
-    "next": "9.3.3",
+    "next": "^10.0.4",
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-mdx-remote": "^1.0.1",
@@ -22,6 +22,7 @@
     "react-lazyload": "^3.1.0",
     "react-markdown": "^5.0.3",
     "react-photo-gallery": "^8.0.0",
+    "shortid": "^2.2.16",
     "webpack": "^5.10.3",
     "webpack-bundle-analyzer": "^4.3.0"
   },

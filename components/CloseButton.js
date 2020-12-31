@@ -15,7 +15,7 @@ const xAnimation = {
     
     transition: {
        delay: 0.5,
-      duration: 2,
+      duration: 1,
         type: "spring", 
         stiffness: 100 
     }

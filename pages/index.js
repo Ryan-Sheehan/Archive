@@ -1,6 +1,6 @@
-
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
+import Image from 'next/image'
 
 import { motion } from 'framer-motion';
  
@@ -36,17 +36,7 @@ const query = `*[_type == "ryan"] {
 `;
 
 
-const listAnimation = {
-  hidden: { 
-    opacity: 0 
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.5
-    }
-  }
-};
+
 
 const listItemAnimation = {
   hidden: {
@@ -81,6 +71,8 @@ const descriptionAnimation = {
   }
 };
 
+const SIZE = 700;
+
 
 class Ryans extends React.Component {
 
@@ -94,49 +86,38 @@ class Ryans extends React.Component {
       y:0,
       width: 0, 
       height: 0,
-      scrolled: 355,
       popup: false,
-      mobile: true,
+      mobile: false,
       mode: 'list'
     }
 
-    this.handleScroll = this.handleScroll.bind(this)
+    
     this.popupStyles = {left:this.state.x+20,top:this.state.y+20}
 
     this.domRefs = {};
+
     this.list = React.createRef();
 
-    this.listDescriptions = {};
-    this.galleryDescriptions = {};
-
+    
     this.galleryPhotos = [];
-    this.listPhotos = []
+    this.galleryDescriptions = {};
+    this.listPhotos = [];
+    this.listDescriptions = {};
 
 
     this.props.ryan.forEach((ryan, i) => {
       
       this.listDescriptions[ryan._id] = <Description info={ryan} mode={"list"}/>;
-      this.galleryDescriptions[ryan._id] = <Description info={ryan} mode={"gallery"}/>;
-      
-      this.galleryPhotos.push({
-        'src': imageUrlFor(ryan.image).width(800).toString(),
-        'id': ryan._id,
-        'name': ryan.name,
-        'desc': ryan.summary,
-        'width': 800, 
-        'height': 800 / ryan.imageAspect
-      });
 
       this.listPhotos.push(
         <li key={ryan._id} 
             ref={(ref) => {this.domRefs[ryan._id] = ref}}
-            className={"ryan-list-item"}
-            onClick={() => {this.state.mobile ? null : this.setActive(ryan._id, "clicked")}}
-            onMouseEnter={() => {if (this.state.open) this.setActive(ryan._id, "hovered")}}
-        >
-          <motion.div initial="hidden" animate="show" transition={{delay: i * 0.2}} variants={listItemAnimation}>
-            <img src={imageUrlFor(ryan.image).width(800)} width="800" height={800 / ryan.imageAspect}/>
-          </motion.div>
+            className="ryan-list-item"
+            onClick={() => {this.setActive(ryan._id, "clicked")}}
+            onMouseEnter={() => {(this.state.open && this.setActive(ryan._id, "hovered"))}}>
+            <motion.div initial="hidden" animate="show" transition={{delay: 0.2}} variants={listItemAnimation}>
+              <Image src={this.checkFile(ryan.image)} height={ SIZE / ryan.imageAspect} width={SIZE} alt={ryan.name} loading="lazy"/>
+            </motion.div>
           <style jsx>{listStyles}</style>
         </li>
       );
@@ -147,36 +128,38 @@ class Ryans extends React.Component {
 
   componentDidMount() {
     this.updateWindowDimensions();
-    window.addEventListener('scroll', this.handleScroll, true)
     window.addEventListener('resize', this.updateWindowDimensions);
     document.addEventListener('mousemove', (e) => {
       this.updateMousePosition(e)
     });
+    
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('resize', this.updateWindowDimensions);
     document.removeEventListener('mousemove', (e) => {
        this.updateMousePosition(e)
     });
     
+    
+  }
+
+  checkFile = (image) => {
+    const file = imageUrlFor(image).url().split(".");
+    const filetype = file[file.length - 1]
+    if (filetype === "gif")
+      return imageUrlFor(image).width(SIZE).url();
+    return imageUrlFor(image).width(SIZE).format('webp').url();
   }
 
 
-  handleScroll = () => {
-
-    let scrolled = this.list.current.children[0].getBoundingClientRect().top
-    
-    if (scrolled >= 0) this.setState({scrolled:scrolled});
-
-    
-  };
+  
 
   updateMousePosition = (coords) => {
     this.setState({x: coords.pageX, y: coords.pageY});
     this.calculatePopupPosition();
   }
+
   updateWindowDimensions = () => {
     if (window.innerWidth <= 728) this.setState({ width: window.innerWidth, height: window.innerHeight, mobile: true });
     else this.setState({ width: window.innerWidth, height: window.innerHeight, mobile: false });
@@ -210,6 +193,25 @@ class Ryans extends React.Component {
   } 
 
   setMode = (current) => {
+
+    if (current === "gallery" && this.galleryPhotos.length === 0) {
+      
+      this.props.ryan.forEach((ryan, i) => {
+      
+        this.galleryDescriptions[ryan._id] = <Description info={ryan} mode={"gallery"}/>;
+
+        this.galleryPhotos.push({
+          'src': imageUrlFor(ryan.image).width(SIZE).toString(),
+          'id': ryan._id,
+          'name': ryan.name,
+          'desc': ryan.summary,
+          'width':  SIZE, 
+          'height': SIZE / ryan.imageAspect
+        });
+
+      });
+    }
+
     this.setState({active:null, open: false, popups:false}, () => this.setState({mode:current}))
   }
 
@@ -229,7 +231,7 @@ class Ryans extends React.Component {
 
   return (
     <Layout>
-    <div style={{backgroundColor: (mobile && `rgb(${scrolled-100},${scrolled-100},${scrolled-100})`)}}>
+    <div>
     <div id="main" className={open ? "container container-pushed" : "container"}>
 
     <Sidebar open={open} mode={mode} mobile={mobile}/>
@@ -244,7 +246,6 @@ class Ryans extends React.Component {
     <div className={open ? "info info-open" : "info"} >
       <div className="info-inner">
         <CloseButton open={open} close={this.handleClose}/>
-        
         <motion.div initial="hidden" animate={open ? "show" : "hidden"} variants={descriptionAnimation}>
         {this.listDescriptions[activeDescription]}
         </motion.div>

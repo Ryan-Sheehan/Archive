@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
 
 
 
@@ -120,7 +120,7 @@ const SelectedImage = ({
     >
       <Checkmark selected={isSelected ? true : false} />
       
-      <img 
+      <Image 
         alt={photo.title}
         style={
           isSelected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }
