@@ -85,10 +85,10 @@ export default css`
   @media only screen and (max-width: 768px) {
     .ryan-list {
       padding-top:50vh;
-      padding-bottom:70vh;
+      height:50vh;
       grid-column-start: 1;
       grid-column-end: 3;
-      grid-row-start:1;
+      
     }
     .ryan-list-inner > li:last-of-type {
       margin-bottom: 60vh;
