@@ -79,6 +79,7 @@ export default css`
     grid-row-start:1;
     height: auto;
     display:block;
+    overflow-y: hidden;
     
   }
   .contact {
