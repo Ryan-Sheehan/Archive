@@ -210,7 +210,7 @@ export default class EmailSVG extends React.Component {
       		overflow: visible;
         	cursor: pointer;
         	margin: 1.25rem 0;
-
+        	ponter-events:auto;
               position: relative;
               height:auto;
                     width: auto;

@@ -15,7 +15,7 @@ export default css`
       }
       .ryan-list {
           padding: 0.625rem;
-
+          ponter-events:auto;
           height: 100%;
           grid-column-start: 2;
           grid-row-start:1;

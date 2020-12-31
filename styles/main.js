@@ -8,7 +8,7 @@ export default css`
       overflow-y: hidden;
       display: grid;
       grid-template-columns: 40vw 60vw;
-      
+      ponter-events:none;
       grid-template-rows: 100vh;
       margin: 0rem;
       position: relative;
