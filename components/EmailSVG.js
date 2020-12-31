@@ -198,6 +198,7 @@ export default class EmailSVG extends React.Component {
 		<style jsx>{`
 		
       	.contact-email {
+      		overflow-y:hidden;
       		overflow: visible;
         	cursor: pointer;
         	margin: 1.25rem 0;
@@ -384,7 +385,7 @@ export default class EmailSVG extends React.Component {
             
            @media only screen and (max-width: 768px) {
                .contact-email {
-               
+               		overflow-y:hidden;
                     position:absolute;
                     height:90px;
                     width: 90px;
@@ -415,7 +416,7 @@ export default class EmailSVG extends React.Component {
 
             @media only screen and (max-width: 450px) {
                .contact-email {
-               
+               		overflow-y:hidden;
                     position:absolute;
                     height:80px;
                     width: 80px;
