@@ -386,23 +386,60 @@ export default class EmailSVG extends React.Component {
                .contact-email {
                
                     position:absolute;
-                    height:160px;
-                    width: 160px;
-                    bottom: 7.5rem;
+                    height:90px;
+                    width: 90px;
+                    top: 11.5rem;
       
-                    background-color: #fff;
+                    background-color: rgba(237,255,0,1);
+                    box-shadow: 0px 0px 0px rgba(237,255,0,1);
                     border-radius: 100%;
                     padding: 0.625rem;
-                    padding-top: 1.1rem;
+                    padding-top: 0.9rem;
                     padding-right: 0.9rem;
                     border: 1px solid #000;
+                    z-index:1000000000000000000000;
                     
                   }
                   .contact-email-copied {
                         animation: 500ms ease-out 0s spinIn;
+                        box-shadow: 0px 0px 0px rgba(237,255,0,1);
                         animation-fill-mode: forwards;
-                        height:200px;
-                         width: 200px;
+                        height:160px;
+                         width: 160px;
+                         background-color: transparent;
+                         border: 0;
+                         padding: 0rem;
+                  }
+
+            }
+
+            @media only screen and (max-width: 450px) {
+               .contact-email {
+               
+                    position:absolute;
+                    height:80px;
+                    width: 80px;
+                    top: 15.5rem;
+                    background-color: rgba(237,255,0,1);
+                    box-shadow: 0px 0px 0px rgba(237,255,0,1);
+                    background-color: rgba(237,255,0,1);
+                    box-shadow: 0px 0px 0px rgba(237,255,0,1);
+      				
+                    
+                    border-radius: 100%;
+                    padding: 0.625rem;
+                    padding-top: 0.75rem;
+                    padding-right: 0.75rem;
+                    border: 1px solid #000;
+                    z-index:1000000000000000000000;
+                    
+                  }
+                  .contact-email-copied {
+                        animation: 500ms ease-out 0s spinIn;
+                        box-shadow: 0px 0px 0px rgba(237,255,0,1);
+                        animation-fill-mode: forwards;
+                        height:130px;
+                         width: 130px;
                          background-color: transparent;
                          border: 0;
                          padding: 0rem;

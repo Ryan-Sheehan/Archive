@@ -3,6 +3,10 @@ import Link from "next/link";
 import Image from 'next/image'
 
 import { motion } from 'framer-motion';
+
+import {
+  isMobile
+} from "react-device-detect";
  
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";

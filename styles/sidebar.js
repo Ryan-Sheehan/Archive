@@ -85,7 +85,7 @@ export default css`
     position: absolute;
     height: 50px;
     width: 50px;
-    z-index:1000000000000000;
+    
   }
 }
 `;
