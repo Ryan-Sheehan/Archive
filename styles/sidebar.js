@@ -76,8 +76,8 @@ export default css`
   .sidebar {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start:1;
-    height: auto;
+    height:100vh;
+    
     display:block;
     overflow-y: hidden;
     

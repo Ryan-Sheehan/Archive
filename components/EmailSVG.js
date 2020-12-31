@@ -394,7 +394,7 @@ export default class EmailSVG extends React.Component {
             
            @media only screen and (max-width: 768px) {
                .contact-email {
-               	pointer-events:none;
+               	
                		overflow-y:hidden;
                     position:absolute;
                     height:90px;
