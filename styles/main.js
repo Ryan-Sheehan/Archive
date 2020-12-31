@@ -5,6 +5,7 @@ export default css`
     .container {
       height: 100vh;
       overflow:visible;
+      overflow-y: hidden;
       display: grid;
       grid-template-columns: 40vw 60vw;
       
