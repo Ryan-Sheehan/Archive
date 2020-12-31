@@ -141,7 +141,7 @@ class Ryans extends React.Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', throttle(this.updateWindowDimensions),500);
     window.addEventListener('scroll', this.getListScrollOffset);
-    document.addEventListener('touchmove', function() { e.preventDefault(); }, { passive:false });
+    
     document.addEventListener('mousemove', throttle((e) => {
       this.updateMousePosition(e)
     },20));
@@ -151,7 +151,7 @@ class Ryans extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.updateWindowDimensions,500));
     window.removeEventListener('scroll', throttle(this.getListScrollOffset,500));
-    document.removeEventListener('touchmove', function() { e.preventDefault(); }, { passive:false });
+
     document.removeEventListener('mousemove', throttle((e) => {
        this.updateMousePosition(e)
     },20));

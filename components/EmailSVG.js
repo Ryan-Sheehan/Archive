@@ -37,6 +37,7 @@ const Gradients = () => {
 };
 
 const Copied = (props) => {
+	
 	return(
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445.82 436.24">
 		<Gradients/>
@@ -115,7 +116,17 @@ export default class EmailSVG extends React.Component {
 			copied: false,
 			color: "#FFE100"
 		}
+
+		this.svg = React.createRef();
 		
+	}
+
+	componentDidMount() {
+	    this.svg.current.addEventListener('touchmove', (e) => { e.preventDefault() }, { passive:false });
+	}
+	
+	componentWillUnmount() {
+	    this.svg.current.removeEventListener('touchmove', (e) => { e.preventDefault() }, { passive:false });
 	}
 
 	copied = () => {
@@ -154,7 +165,8 @@ export default class EmailSVG extends React.Component {
 
 
 
-		<svg className={this.state.hovered ? "noFadeIn" : "fadeIn"}
+		<svg ref={this.svg}
+		className={this.state.hovered ? "noFadeIn" : "fadeIn"}
 		onMouseEnter={isMobile ? null : this.onHover}
 		onMouseLeave={isMobile ? null : this.onUnhover}
 		xmlns="http://www.w3.org/2000/svg" 
@@ -394,7 +406,7 @@ export default class EmailSVG extends React.Component {
             
            @media only screen and (max-width: 768px) {
                .contact-email {
-               	
+
                		overflow-y:hidden;
                     position:absolute;
                     height:90px;
