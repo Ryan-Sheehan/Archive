@@ -1,6 +1,10 @@
 import React,{ useState, useEffect } from "react";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
+import {
+  isMobile
+} from "react-device-detect";
+
 const Gradients = () => {
 	return(
 		<defs>
@@ -125,9 +129,13 @@ export default class EmailSVG extends React.Component {
 
 
 	onHover = () => {
-		this.setState({hovered:true});
+		this.setState({hovered:true})
+	}
+	onUnhover = () => {
+		this.setState({hovered:false})
 		
 	}
+
 
 	render() {
 	return(
@@ -147,8 +155,8 @@ export default class EmailSVG extends React.Component {
 
 
 		<svg className={this.state.hovered ? "noFadeIn" : "fadeIn"}
-		onMouseEnter={() => {this.onHover()}}
-		onMouseLeave={() => {this.setState({hovered:false})}}
+		onMouseEnter={isMobile ? null : this.onHover}
+		onMouseLeave={isMobile ? null : this.onUnhover}
 		xmlns="http://www.w3.org/2000/svg" 
 		viewBox="0 0 351.12 338.42">
 		<Gradients/>
