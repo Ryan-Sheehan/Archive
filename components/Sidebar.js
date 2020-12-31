@@ -46,7 +46,7 @@ const Sidebar = ({open, mode, mobile}) => {
       
       <div className="sidebar-inner">
       <SidebarHeader/>
-      <EmailSVG/>
+      
       </div>
 
       :

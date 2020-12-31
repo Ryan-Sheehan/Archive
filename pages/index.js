@@ -263,6 +263,8 @@ class Ryans extends React.Component {
     <GalleryView photos={this.galleryPhotos} setActive={this.setActive}/>
     </div>}
 
+    {mobile && <EmailSVG/>}
+
     <Modes mode={mode} setMode={this.setMode} popup={popup} setPopup={this.setPopup}/>
 
     {/* Styles */}
