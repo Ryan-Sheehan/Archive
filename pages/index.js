@@ -258,7 +258,7 @@ class Ryans extends React.Component {
   return (
     <Layout>
     <Favicon emoji={emoji}/>
-    <div style={{height: "100vh", overflow: "hidden", backgroundColor: isMobile ? scrollColor : "#fff"}}>
+    <div style={{backgroundColor: isMobile ? scrollColor : "#fff"}}>
     <div id="main" className={open ? "container container-pushed" : "container"}>
 
     <Sidebar open={open} mode={mode} mobile={mobile}/>

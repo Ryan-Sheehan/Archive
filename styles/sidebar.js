@@ -76,10 +76,10 @@ export default css`
   .sidebar {
     grid-column-start: 1;
     grid-column-end: 3;
-    height:100vh;
+    
     
     display:block;
-    overflow-y: hidden;
+    
     
   }
   .contact {

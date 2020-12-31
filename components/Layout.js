@@ -1,7 +1,7 @@
 
 import Head from "next/head";
 import Link from "next/link";
-
+import Div100vh from 'react-div-100vh'
 
 
 export default function Layout(props) {
@@ -37,8 +37,9 @@ export default function Layout(props) {
       
 
       
-      
+      <Div100vh>
       {props.children}
+      </Div100vh>
       
       
      <style jsx global>{`
