@@ -17,12 +17,14 @@ const Modes = ({mode, setMode, popup, setPopup}) => {
 	return(
 		<Fragment>
 		<label className={mode === "gallery" ? "checkbox-open":"checkbox-closed"}>
+            <div className={popup ? "checkbox-toggle checkbox-toggle-on" : "checkbox-toggle"}>
             <input
               type="checkbox"
-              
+              className="checkbox-actual"
               checked={popup}
               onChange={handleChange}
-            /> Info on hover
+            /> {popup ? "ON" : "OFF"}</div>
+            <div className="checkbox-text">Click on any image to be brought to its project page. You can also click the button to the left to get information while hovering here.</div>
             
         </label> 
 	<div className="mode-menu">

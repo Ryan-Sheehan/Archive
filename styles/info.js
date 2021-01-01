@@ -82,6 +82,66 @@ export default css`
 .info-x:active {
   transform: scale(0.8);
 }
+.info-link {
+  opacity:1;
+  font-family: 'SwearVar';
+  text-decoration:none;
+  color: #fff;
+  font-size: 1rem;
+
+  
+  display: flex;
+    flex-flow: row nowrap;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0 0 5px;
+    font-variation-settings: 'wght' 100;
+    transition: all 0.1s ease-in-out;
+}
+.info-link:hover {
+  color: #fff;
+  
+  opacity:1;
+  font-variation-settings: 'wght' 100;
+   margin: 0 0 5px;
+
+ 
+}
+
+  
+  .info-link-hover {
+ padding; 1.25rem 0.625rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  transition: all 0.1s ease-in-out;
+
+  position: relative;
+        
+}
+.info-link-hover:before,.info-link-hover:after {
+ content: "";
+  position: absolute;
+  bottom: -3px;
+  width: 0px;
+  height: 1px;
+  margin: 5x 0 0;
+  transition: all 0.1s ease-in-out;
+  transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+  transition-duration: 0.5s;
+  opacity: 0;
+  background-color: rgba(237,255,0,1);
+
+}
+.info-link-hover:before {
+  left:0px;
+}
+.info-link:hover .info-link-hover:before {
+  width: 100%;
+  opacity: 1;
+}
+
 @keyframes pulse {
          0% {
            font-variation-settings: 'wght' 200;
@@ -96,7 +156,7 @@ export default css`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding-right: 50%;
+  padding-right: 20%;
   transition-duration: 1500ms;
 }
 .info-name {
@@ -109,16 +169,43 @@ export default css`
 }
 .info-desc {
   font-family: 'ObjectSansRegular';
+  padding: 1.25rem 0;
+
   
   
 }
+.info-date::selection {
+  background: yellow !important;
+}
+.info-date::-moz-selection {
+  background: yellow !important;
+}
+
+.info-name::selection {
+  background: #EDFF00 !important;
+}
+.info-name::-moz-selection {
+  background: #EDFF00 !important;
+}
+.info-desc::selection {
+  background: #EDFF00 !important;
+}
+.info-desc::-moz-selection {
+  background: #EDFF00 !important;
+}
+.info-link-hover::selection {
+  background: #EDFF00 !important;
+}
+.info-link-hover::-moz-selection {
+  background: #EDFF00 !important;
+}
 .info-date {
   
-  font-family: 'SwearBannerBoldCilati';
+
   font-family: 'SwearBannerRegular';
   width: 100%;
   text-align:left;
-  font-size: 4rem;
+  font-size: 5rem;
   line-height: 4.6rem;
   margin-bottom:0.625rem;
   animation: slideInFromLeft 0.5s cubic-bezier(0.12, 0, 0.39, 0);
@@ -138,8 +225,20 @@ export default css`
          }
        }
 
+@keyframes linkFadeIn {
+         0% {
+
+           opacity:0;
+
+         }
+         100% {
+           
+            opacity: 0.5;
+         }
+       }
+
   
-  @media only screen and (max-width : 1024px) {    
+  @media only screen and (max-width : 768px) {    
     .info-inner {
 
       padding-right: 20%;

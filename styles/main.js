@@ -2,6 +2,12 @@
 import css from "styled-jsx/css";
 
 export default css`
+::selection {
+  background: #EDFF00 !important;
+}
+::-moz-selection {
+  background: #EDFF00 !important;
+}
     .container {
       height: 100vh;
       overflow:visible;

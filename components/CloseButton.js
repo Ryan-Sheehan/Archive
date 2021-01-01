@@ -30,7 +30,7 @@ const CloseButton = ({open, close}) => {
              onMouseLeave={() => setHover(false)}
              onClick={() => close()}
         >
-        <motion.div initial="hidden" animate={open ? "show" : "hidden"} variants={xAnimation}>X</motion.div>
+        <motion.div initial="hidden" animate={open ? "show" : "hidden"} variants={xAnimation} className="info-x-inner">X</motion.div>
         <style jsx>{infoStyles}</style>
         </div>
 		);

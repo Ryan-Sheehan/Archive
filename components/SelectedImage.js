@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-
+import Link from "next/link";
 
 
 
@@ -107,6 +107,7 @@ const SelectedImage = ({
   const handleMouseLeave = e => {
    
   };
+  console.log(photo.slug)
 
   useEffect(() => {
     setIsSelected(selected);
@@ -120,6 +121,8 @@ const SelectedImage = ({
     >
       <Checkmark selected={isSelected ? true : false} />
       
+
+      <Link href="/projects/[slug]" as={`/projects/${photo.slug}`}>
       <Image 
         alt={photo.title}
         style={
@@ -130,6 +133,7 @@ const SelectedImage = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
+      </Link>
 
       {isHovered && <div style={{position:"absolute", zIndex: 100000000, fontSize: "5rem", top: 0}}>{photo.desc}</div>}
       

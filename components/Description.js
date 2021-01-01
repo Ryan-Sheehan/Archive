@@ -15,7 +15,7 @@ export default function Description({info, mode}) {
     />
    	<div className="gallery-info-text">
    	<div className="info-name">{info.name}</div>
-   	<div className="info-desc">{<ReactMarkdown>{info.summary}</ReactMarkdown>}</div>
+   	<div className="info-desc">{info.summary}</div>
    	<div className="info-date">{info.date.split("-")[0]}</div>
    	</div>
    	<style jsx>{infoStyles}</style>
@@ -25,14 +25,17 @@ export default function Description({info, mode}) {
 
    	<div key={info._id}>
    	<div className="info-name">{info.name}</div>
-   	<div className="info-desc">{<ReactMarkdown>{info.summary}</ReactMarkdown>}</div>
-   	<div className="info-date">{info.date.split("-")[0]}</div>
-    <div className="info-more">See more from this project:</div>
+   	<div className="info-desc">{info.summary}</div>
+   	
+
     <Link href="/projects/[slug]" as={`/projects/${info.projects.slug.current}`}>
-        <a>
-        {info.projects.slug.current}
+        <a className="info-link">
+        <span className="info-link-hover">
+        go to project →
+        </span>
         </a>
     </Link>
+    <div className="info-date">{info.date.split("-")[0]}</div>
    	<style jsx>{infoStyles}</style>
    	</div>
    	;

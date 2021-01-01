@@ -170,8 +170,8 @@ class Ryans extends React.Component {
 
 
   getListScrollOffset = () => {
-    console.log(window.location.href.split("/").length)
-    if (window.location.href.split("/").length <= 3) {
+    //console.log(window.location.href.split("/").length)
+    if (window.location.href.split("/").length <= 4) {
     const firstListElem = this.list.current.firstChild;
     const offset = Math.floor(firstListElem.getBoundingClientRect().top);
     const offsetPos = offset > 0 ? offset : 0;
@@ -230,6 +230,7 @@ class Ryans extends React.Component {
         this.galleryPhotos.push({
           'src': imageUrlFor(ryan.image).width(SIZE).toString(),
           'id': ryan._id,
+          'slug': ryan.projects.slug.current,
           'name': ryan.name,
           'desc': ryan.summary,
           'width':  SIZE, 
@@ -267,7 +268,7 @@ class Ryans extends React.Component {
     <Sidebar open={open} mode={mode} mobile={mobile}/>
     
     {/* Logic for list view */}
-    <div className="ryan-list"  style={{opacity: mode === "gallery" ? '0' : '1'}} onScroll={this.getListScrollOffset}>
+    <div className="ryan-list"  style={{opacity: mode === "gallery" ? '0' : '1'}} onScroll={isMobile ? this.getListScrollOffset : null}>
       <ul className="ryan-list-inner" ref={this.list} >
         {this.listPhotos}
       </ul>

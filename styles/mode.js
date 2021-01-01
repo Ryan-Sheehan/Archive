@@ -54,22 +54,59 @@ export default css`
       border-right: 0;
     }
     .checkbox-open {
-      font-family: 'ProtoGroteskBold';
+      font-family: 'ObjectSansRegular';
       z-index:1000000000000;
       font-size: 1rem;
+      opacity: 1;
       position: absolute;
-        bottom: 1.25rem;
-        right: 6rem;
-        border-radius: 10px;
-        border: 1px solid black;
-        background-color: rgba(237,255,0,1);
-        padding: 0.625rem;
-        transition-duration: 600ms;
+      bottom: 1.25rem;
+
+      right: 6rem;
+      border-radius: 10px;
+      border: 1px solid rgba(237,255,0,1);
+      background-color: rgba(237,255,0,1);
+      padding: 0.625rem;
+      transition-duration: 600ms;
+      display:flex;
+      justify-content: flex-start;
     }
     .checkbox-closed {
+      background-color: rgba(237,255,0,1);
+      opacity: 0;
       transition-duration: 500ms;
       bottom: -4rem;
       padding: 0.625rem 1.25rem;
+    }
+    .checkbox-actual {
+      display:none;
+    }
+    .checkbox-toggle {
+      border: 1px solid black;
+      border-radius: 10px;
+      width: 132px;
+      height: 98px;
+    }
+    .checkbox-toggle-on {
+
+    }
+    .checkbox-text {
+      
+      width: 200px;
+      padding: 0 0.625rem;
+      font-size: 0.85rem;
+
+    }
+    .checkbox-toggle::selection {
+      background: transparent !important;
+    }
+    .checkbox-toggle::-moz-selection {
+      background: transparent !important;
+    }
+    .checkbox-text::selection {
+      background: #fff !important;
+    }
+    .checkbox-text::-moz-selection {
+      background: #fff !important;
     }
 
     @keyframes scaleUp {

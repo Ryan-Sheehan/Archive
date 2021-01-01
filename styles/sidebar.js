@@ -34,6 +34,12 @@ export default css`
   font-size: 1.3rem;
   line-height: 1.8rem;
 }
+.sidebar-bio::selection {
+  background: #EDFF00 !important;
+}
+.sidebar-bio::-moz-selection {
+  background: #EDFF00 !important;
+}
 .sidebar-description {
   font-family: 'SwearTextRegular';
   font-size: 0.8rem;
