@@ -9,6 +9,7 @@ import crewMember from './crewMember'
 import castMember from './castMember'
 import movie from './movie'
 import person from './person'
+import project from './project'
 import ryan from './ryan'
 import screening from './screening'
 import plotSummary from './plotSummary'
@@ -27,6 +28,8 @@ export default createSchema({
     person,
     screening,
     ryan,
+    project,
+    
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas
     blockContent,

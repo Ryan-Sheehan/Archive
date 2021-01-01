@@ -18,6 +18,7 @@ const singleRyanQuery = `*[_type == "ryan" && _id == $id] {
 
 
 const Ryan = ({ ryan }) => {
+  
   return (
     <Layout>
       <div className="ryan">

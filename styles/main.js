@@ -5,7 +5,7 @@ export default css`
     .container {
       height: 100vh;
       overflow:visible;
-      overflow-y: hidden;
+      
       display: grid;
       grid-template-columns: 40vw 60vw;
       ponter-events:none;
@@ -80,7 +80,7 @@ export default css`
 
     @media only screen and (max-width: 768px) {
       body {
-        
+
       }
       .container {
 
