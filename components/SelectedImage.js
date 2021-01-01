@@ -133,7 +133,7 @@ const SelectedImage = ({
 
       {isHovered && <div style={{position:"absolute", zIndex: 100000000, fontSize: "5rem", top: 0}}>{photo.desc}</div>}
       
-      <style>{`.not-selected:hover{outline:2px solid #fff}`}</style>
+      <style>{`.not-selected:hover{outline:2px solid rgba(237,255,0,1)}`}</style>
     </div>
     </motion.div>
   );

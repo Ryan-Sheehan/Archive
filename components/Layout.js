@@ -3,6 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import Div100vh from 'react-div-100vh'
 
+import {
+  isMobile
+} from "react-device-detect";
 
 export default function Layout(props) {
   return (
@@ -37,9 +40,13 @@ export default function Layout(props) {
       
 
       
+      {isMobile ?
       <Div100vh>
       {props.children}
       </Div100vh>
+      :
+      props.children
+      }
       
       
      <style jsx global>{`

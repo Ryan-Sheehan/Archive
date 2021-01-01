@@ -1,6 +1,7 @@
 import infoStyles from "../styles/info";
 import ReactMarkdown from 'react-markdown'
 import imageUrlFor from "../utils/imageUrlFor";
+import Link from "next/link";
 
 export default function Description({info, mode}) {
   
@@ -26,6 +27,12 @@ export default function Description({info, mode}) {
    	<div className="info-name">{info.name}</div>
    	<div className="info-desc">{<ReactMarkdown>{info.summary}</ReactMarkdown>}</div>
    	<div className="info-date">{info.date.split("-")[0]}</div>
+    <div className="info-more">See more from this project:</div>
+    <Link href="/projects/[slug]" as={`/projects/${info.projects.slug.current}`}>
+        <a>
+        {info.projects.slug.current}
+        </a>
+    </Link>
    	<style jsx>{infoStyles}</style>
    	</div>
    	;

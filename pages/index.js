@@ -21,6 +21,7 @@ import fontStyles from "../styles/fonts";
 import mainStyles from "../styles/main";
 
 import imageUrlFor from "../utils/imageUrlFor";
+import checkFile from "../utils/checkFile";
 import getEmoji from "../utils/getEmoji";
 import Favicon from "../components/Favicon";
 import CloseButton from "../components/CloseButton";
@@ -37,6 +38,7 @@ const query = `*[_type == "ryan"] {
   name,
   summary,
   date,
+  projects->{slug},
   image,
   "imageAspect": image.asset->.metadata.dimensions.aspectRatio,
   "color":image.asset->.metadata.palette.dominant.background
@@ -114,6 +116,8 @@ class Ryans extends React.Component {
     this.listPhotos = [];
     this.listDescriptions = {};
 
+    console.log(this.props.ryan)
+
 
     this.props.ryan.forEach((ryan, i) => {
       
@@ -126,7 +130,7 @@ class Ryans extends React.Component {
             onClick={() => {isMobile ? null : this.setActive(ryan._id, "clicked")}}
             onMouseEnter={() => {(this.state.open && this.setActive(ryan._id, "hovered"))}}>
             <motion.div initial="hidden" animate="show" transition={{delay: 0.2}} variants={listItemAnimation}>
-              <Image src={this.checkFile(ryan.image)} height={ SIZE / ryan.imageAspect} width={SIZE} alt={ryan.name} loading="lazy"/>
+              <Image src={checkFile(ryan.image, SIZE)} height={ SIZE / ryan.imageAspect} width={SIZE} alt={ryan.name}/>
             </motion.div>
           <style jsx>{listStyles}</style>
         </li>
@@ -162,13 +166,7 @@ class Ryans extends React.Component {
     
   }
 
-  checkFile = (image) => {
-    const file = imageUrlFor(image).url().split(".");
-    const filetype = file[file.length - 1]
-    if (filetype === "gif")
-      return imageUrlFor(image).width(SIZE).url();
-    return imageUrlFor(image).width(SIZE).format('webp').url();
-  }
+  
 
 
   getListScrollOffset = () => {

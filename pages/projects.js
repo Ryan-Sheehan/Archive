@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import Layout from "../components/Layout";
 import sanity from "../lib/sanity";
 
+import getEmoji from "../utils/getEmoji";
+import Favicon from "../components/Favicon";
 
 
 
@@ -27,13 +29,14 @@ class Projects extends React.Component {
   constructor(props) {
     super(props)
       this.state = {
+        emoji: getEmoji()
     }
  
     this.titles = [];
     this.props.projects.forEach((project, i) => {
       
       this.titles.push(<li key={project._id}>
-        <Link href="/projects/[id]" as={`/projects/${project.slug.current}`}>
+        <Link href="/projects/[slug]" as={`/projects/${project.slug.current}`}>
         <a>
         {project.name}
         </a>
@@ -59,9 +62,10 @@ class Projects extends React.Component {
   }
 
   render() {
-  
+  const {emoji}=this.state;
   return (
     <Layout>
+    <Favicon emoji={emoji}/>
     <ul>
     {this.titles}
     </ul>
