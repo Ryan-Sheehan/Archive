@@ -39,7 +39,7 @@ const contactAnimation = {
 const Sidebar = ({open, mode, mobile}) => {
   
   useEffect(() => console.log(), [open, mode, mobile]);
-  
+
   return(
     <div className={"sidebar"} style={{opacity: open || mode === "gallery" ? '0' : '1'}}>
     {mobile ? 

@@ -43,7 +43,7 @@ export default function Layout(props) {
       {isMobile ?
       <Div100vh>
       {props.children}
-      </Div100vh>
+      </Div100vh> 
       :
       props.children
       }

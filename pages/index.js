@@ -170,13 +170,14 @@ class Ryans extends React.Component {
 
 
   getListScrollOffset = () => {
-    
+    console.log(window.location.href.split("/").length)
     if (window.location.href.split("/").length <= 4) {
     const firstListElem = this.list.current.firstChild;
     const offset = Math.floor(firstListElem.getBoundingClientRect().top);
     const offsetPos = offset > 0 ? offset : 0;
     this.setState({scrollColor:`rgb(${offset},${offset},${offset})`})
     }
+    
   }
 
 
@@ -265,7 +266,7 @@ class Ryans extends React.Component {
     <div style={isMobile ? {backgroundColor: scrollColor} : null}>
     <div id="main" className={open ? "container container-pushed" : "container"}>
 
-    <Sidebar open={open} mode={mode} mobile={mobile}/>
+    <Sidebar open={open} mode={mode} mobile={isMobile}/>
     
     {/* Logic for list view */}
     <div className="ryan-list"  style={{opacity: mode === "gallery" ? '0' : '1'}} onScroll={isMobile ? this.getListScrollOffset : null}>
@@ -290,7 +291,7 @@ class Ryans extends React.Component {
     <GalleryView photos={this.galleryPhotos} setActive={this.setActive}/>
     </div>}
 
-    {mobile && <EmailSVG/>}
+    {isMobile && <EmailSVG/>}
 
     <Modes mode={mode} setMode={this.setMode} popup={popup} setPopup={this.setPopup}/>
 

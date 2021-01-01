@@ -81,6 +81,11 @@ export default css`
       display:none;
     }
     .checkbox-toggle {
+      cursor: pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family: 'ProtoGroteskBold';
       border: 1px solid black;
       border-radius: 10px;
       width: 132px;
