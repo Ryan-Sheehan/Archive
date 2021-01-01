@@ -170,10 +170,13 @@ class Ryans extends React.Component {
 
 
   getListScrollOffset = () => {
+    console.log(window.location.href.split("/").length)
+    if (window.location.href.split("/").length <= 3) {
     const firstListElem = this.list.current.firstChild;
     const offset = Math.floor(firstListElem.getBoundingClientRect().top);
     const offsetPos = offset > 0 ? offset : 0;
     this.setState({scrollColor:`rgb(${offset},${offset},${offset})`})
+    }
   }
 
 
